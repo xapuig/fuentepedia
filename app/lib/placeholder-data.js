@@ -180,9 +180,35 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
+const ubicaciones = [
+  {
+    id: '3958dc9e-799f-4377-85e9-fec4b6a6442a',
+    name: 'Ontinyent',
+    zipcode: '46870',
+    lat: '38.821934',
+    lng: '-0.606589',
+  }
+];
+const fuentes = [
+  {
+    ubicacion_id: ubicaciones[0].id,
+    name: 'Fuente 1',
+    lat: '38.815680',
+    lng: '-0.607100',
+  },
+  {
+    ubicacion_id: ubicaciones[0].id,
+    name: 'Fuente 2',
+    lat: '38.819674',
+    lng: '-0.604491',
+  }
+];
+
 module.exports = {
   users,
   customers,
   invoices,
   revenue,
+  ubicaciones,
+  fuentes,
 };
