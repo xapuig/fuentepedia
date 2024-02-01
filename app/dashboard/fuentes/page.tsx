@@ -3,7 +3,6 @@ import {
   useLoadScript,
   GoogleMap,
   MarkerF,
-  CircleF,
 } from '@react-google-maps/api';
 import type { NextPage } from 'next';
 import { useMemo, useState } from 'react';
@@ -34,11 +33,11 @@ const Home: NextPage = () => {
 
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
-      mapTypeId:  google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
       clickableIcons: true,
       scrollwheel: true,
       styles: myStyles,
+      zoom: 15,
     }),
     []
   );
@@ -59,17 +58,17 @@ const Home: NextPage = () => {
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '800px', height: '800px' }}
+        mapContainerStyle={{ width: '1200px', height: '900px' }}
         onLoad={(map) => console.log('Map Loaded')}
       >
         <MarkerF
           position={mapCenter}
           onLoad={() => console.log('Marker Loaded')}
         />
+
       </GoogleMap>
     </div>
   );
 };
-
 
 export default Home;
