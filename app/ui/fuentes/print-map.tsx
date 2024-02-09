@@ -6,10 +6,12 @@ import {
   } from '@react-google-maps/api';
   import { useMemo, useState } from 'react';
   import styles from '../../ui/home.module.css';
-  import { UbicacionField } from '@/app/lib/definitions';
+  import { FuenteField, UbicacionField } from '@/app/lib/definitions';
 
 
-  export default function Map({ ubicacion}: { ubicacion: UbicacionField[] }) { 
+
+  export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
+
   const [lat, setLat] = useState(Number(ubicacion[0].lat));
   const [lng, setLng] = useState(Number(ubicacion[0].lng));
 
@@ -62,10 +64,25 @@ import {
         mapContainerStyle={{ width: '1200px', height: '900px' }}
         onLoad={(map) => console.log('Map Loaded')}
       >
-        <MarkerF
+         {fuentes.map((fuente) => (
+              <MarkerF 
+              key={fuente.id} 
+              position={{ lat: Number(fuente.lat), lng: Number(fuente.lng) }} 
+              onLoad={() => console.log('Marker Loaded')}
+              icon={{
+                url: 'https://i.imgur.com/HY488rK.png',
+              }}
+              />
+                
+            ))}
+        {/* <MarkerF
           position={mapCenter}
           onLoad={() => console.log('Marker Loaded')}
         />
+        <MarkerF
+          position={{ lat: Number(ubicacion[0].lat), lng: Number(ubicacion[0].lng) }}
+          onLoad={() => console.log('Marker Loaded')}
+        /> */}
 
       </GoogleMap>
     </div>

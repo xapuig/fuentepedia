@@ -88,6 +88,14 @@ export type UbicacionField = {
   lng: number;
 };
 
+export type FuenteField = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+};
+
+
 export type InvoiceForm = {
   id: string;
   customer_id: string;

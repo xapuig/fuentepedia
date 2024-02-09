@@ -9,6 +9,7 @@ import {
   User,
   Revenue,
   UbicacionField,
+  FuenteField,
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -222,6 +223,22 @@ export async function fetchUbicacionById(id: string) {
     `;
     const ubicacion = data.rows;
     return ubicacion;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch ubicacion.');
+  }
+}
+
+export async function fetchFuentesByUbicacionId(id: string) {
+  try {
+    noStore();
+    const data = await sql<FuenteField>`
+      SELECT *
+      FROM fuentes
+      WHERE fuentes.ubicacion_id = ${id};
+    `;
+    const fuente = data.rows;
+    return fuente;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch ubicacion.');
