@@ -80,6 +80,14 @@ export type CustomerField = {
   name: string;
 };
 
+export type UbicacionField = {
+  id: string;
+  name: string;
+  zipcode: string;
+  lat: number;
+  lng: number;
+};
+
 export type InvoiceForm = {
   id: string;
   customer_id: string;

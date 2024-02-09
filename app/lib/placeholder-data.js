@@ -187,6 +187,13 @@ const ubicaciones = [
     zipcode: '46870',
     lat: '38.821934',
     lng: '-0.606589',
+  },
+  {
+    id: 'a6b4a6c6-8d66-4b8e-8c8a-1c8a8a8a8a8a',
+    name: 'Xàtiva',
+    zipcode: '46800',
+    lat: '38.9833300',
+    lng: '-0.5166700',
   }
 ];
 const fuentes = [
