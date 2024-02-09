@@ -7,6 +7,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import bcrypt from 'bcrypt'
+const { v4: uuidv4 } = require('uuid');
+
  
 const CreateInvoiceSchema = z.object({
   id: z.string(),
@@ -137,11 +140,65 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return 'Usuario o contraseña incorrecta.';
         default:
-          return 'Something went wrong.';
+          return 'Algo salió mal.';
       }
     }
     throw error;
   }
+}
+
+const RegisterUser = z.object({
+  name: z.string({
+    invalid_type_error: 'Por favor escribe tu nombre.',
+  }),
+  email: z.string({
+    invalid_type_error: 'Por favor escribe tu correo electrónico',
+  }),
+  password: z.string({
+    invalid_type_error: 'Por favor escribe tu contraseña.',
+  }),
+  confirmPassword: z.string({
+    invalid_type_error: 'Por favor escribe de nuevo tu contraseña.',
+  }),
+})
+
+export async function register(
+  prevState: string | null,
+  formData: FormData,
+) {
+
+  const validatedFields = RegisterUser.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+    confirmPassword: formData.get('confirm-password'),
+  })
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return "Faltan campos. Error al crear la cuenta."
+  }
+
+  const { name, email, password, confirmPassword } = validatedFields.data
+
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    return "Las contraseñas no coinciden."
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+  const id = uuidv4()
+
+  try {
+    await sql`
+      INSERT INTO users (id, name, email, password)
+      VALUES (${id}, ${name}, ${email}, ${hashedPassword})
+    `
+  } catch (error) {
+    return "Error en la base de datos: No se pudo crear la cuenta, pruebe a escribir otro correo electrónico."
+  }
+
+  redirect('/login')
 }
