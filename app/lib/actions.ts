@@ -197,7 +197,13 @@ export async function register(
       VALUES (${id}, ${name}, ${email}, ${hashedPassword})
     `
   } catch (error) {
-    return "Error en la base de datos: No se pudo crear la cuenta, pruebe a escribir otro correo electrónico."
+    if (error instanceof Error) {
+      if (error.message === 'duplicate key value violates unique constraint "users_email_key"') {
+        return "Ya existe una cuenta con ese correo electrónico."
+      } else {
+        return "Error en la base de datos: No se pudo crear la cuenta."
+      }
+    }
   }
 
   redirect('/login')

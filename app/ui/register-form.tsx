@@ -19,7 +19,7 @@ export default function RegisterForm() {
     <form action={formAction} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Resgitrarse con e-mail
+          Registro con e-mail
         </h1>
         <div className="w-full">
           <div>
@@ -103,13 +103,13 @@ export default function RegisterForm() {
         </div>
         <RegisterButton />
         <div
-          className="flex h-8 mt-15 items-end space-x-1"
+          className="flex h-8 mt-6 items-end space-x-1"
           aria-live="polite"
           aria-atomic="true"
         >
           {errorMessage && (
             <>
-              <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+              <ExclamationCircleIcon className="h-6 w-6 text-red-500" />
               <p className="text-sm text-red-500">{errorMessage}</p>
             </>
           )}
@@ -123,7 +123,7 @@ function RegisterButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="mt-4 w-full" aria-disabled={pending}>
+    <Button className="mt-6 w-full" aria-disabled={pending}>
       Registrarse <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );
