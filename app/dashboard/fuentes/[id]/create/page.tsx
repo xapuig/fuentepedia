@@ -1,8 +1,7 @@
-import Form from '@/app/ui/fuentes/create-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchUbicacionById } from '@/app/lib/data';
+import { fetchFuentesByUbicacionId, fetchUbicacionById } from '@/app/lib/data';
 import { Metadata } from 'next';
-
+import MapCreateMarker from '@/app/ui/fuentes/print-map-createmarker';
 
 export const metadata: Metadata = {
   title: 'Crear marcador de fuente',
@@ -10,7 +9,10 @@ export const metadata: Metadata = {
  
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
-    const ubicacion = await fetchUbicacionById(id);
+    const [ubicacion, fuentes] = await Promise.all([
+      fetchUbicacionById(id),
+      fetchFuentesByUbicacionId(id),
+    ]);
  
   return (
     <main>
@@ -18,17 +20,17 @@ export default async function Page({ params }: { params: { id: string } }) {
         breadcrumbs={[
           { label: 'Fuentes', href: '/dashboard/fuentes' },
           {
-            label: `Fuentes de ${ubicacion[0].name}`,
+            label: `${ubicacion[0].name}`,
             href: `/dashboard/fuentes/${id}`,
           },
           {
-            label: `Crear marcador de fuente`,
+            label: `Crear marcador`,
             href: `/dashboard/fuentes/${id}/create`,
             active: true,
           },
         ]}
       />
-      <Form ubicaciones={ubicacion} />
+      <MapCreateMarker ubicacion={ubicacion} fuentes={fuentes} />
     </main>
   );
 }

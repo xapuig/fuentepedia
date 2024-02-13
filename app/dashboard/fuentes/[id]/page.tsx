@@ -7,7 +7,7 @@ import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
 
 export const metadata: Metadata = {
-  title: 'Clientes',
+  title: 'Mapa de fuentes',
 };
 export default async function Page({ params }: { params: { id: string } }) {
    const id = params.id;
@@ -26,7 +26,7 @@ return (
         breadcrumbs={[
           { label: 'Fuentes', href: '/dashboard/fuentes' },
           {
-            label: `Fuentes de ${ubicacion[0].name}`,
+            label: `${ubicacion[0].name}`,
             href: `/dashboard/fuentes/${id}`,
             active: true,
           },

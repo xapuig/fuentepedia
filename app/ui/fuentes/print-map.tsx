@@ -73,7 +73,7 @@ import {
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '1200px', height: '900px' }}
+        mapContainerStyle={{ width: '50%', height: '50vh' }}
         onLoad={(map) => console.log('Map Loaded')}
         onClick={() => handleClickOnMap()}
       >
@@ -89,8 +89,8 @@ import {
               >
                 {activeMarker === fuente.id ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                    <div>{fuente.name}
-                    <p>Borrar</p>
+                    <div>
+                      {fuente.name}
                     </div>
                   </InfoWindow>
                 ) : null}
