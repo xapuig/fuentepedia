@@ -208,3 +208,68 @@ export async function register(
 
   redirect('/login')
 }
+
+const CreateFuenteSchema = z.object({
+  id: z.string(),
+  ubicacionId: z.string().trim().min(1, { message: "Ubicación requerida" }),
+  name: z.string().trim().min(1, { message: "Error, escribe un nombre para la fuente" }),
+  lat: z.coerce.number().lt(90, { message: 'Error, escribe un número entre -90 y 90' }).gt(-90, { message: 'Error, escribe un número entre -90 y 90' }),
+  lng: z.coerce.number().lt(180, { message: 'Error, escribe un número entre -180 y 180' }).gt(-180, { message: 'Error, escribe un número entre -180 y 180' }),
+})
+ 
+const CreateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
+
+export type State2 = {
+  errors?: {
+    ubicacionId?: string[];
+    name?: string[];
+    lat?: string[];
+    lng?: string[];
+  };
+  message?: string | null;
+};
+export async function createFuente(prevState: State2, formData: FormData) {
+  const validatedFields = CreateFuenteFormSchema.safeParse({
+    ubicacionId: formData.get('ubicacionId'),
+    name: formData.get('name'),
+    lat: formData.get('lat'),
+    lng: formData.get('lng'),
+  });
+ 
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Faltan campos, error al crear la fuente',
+    };
+  }
+  const { ubicacionId, name, lat, lng } = validatedFields.data;
+
+  try {
+    await sql`
+    INSERT INTO fuentes (ubicacion_id, name, lat, lng)
+    VALUES (${ubicacionId}, ${name}, ${lat}, ${lng})
+  `;
+  } catch (error) {
+    return {
+      message: 'DB Error: No se pudo crear la fuente.',
+    }
+  }
+  
+revalidatePath(`/dashboard/fuentes/${ubicacionId}`);
+redirect(`/dashboard/fuentes/${ubicacionId}`);
+
+  
+}
+
+export async function deleteFuente(id: string) {
+
+  try {
+    await sql`DELETE FROM fuentes WHERE id = ${id}`;
+    revalidatePath(`/dashboard/fuentes/${id}`);
+    return { message: 'Fuente borrada.' };
+  } catch (error) {
+    return {
+      message: 'DB Error: No se pudo borrar la fuente.',
+    }
+  }
+}

@@ -13,6 +13,11 @@ export default async function Page() {
  
   return (
     <main>
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: 'Fuentes', href: '/dashboard/fuentes', active: true },
+        ]}
+      />
       <Form ubicaciones={ubicaciones} />
     </main>
   );

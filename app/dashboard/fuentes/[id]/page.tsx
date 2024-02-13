@@ -2,7 +2,10 @@ import { Metadata } from "next";
 import Map from '@/app/ui/fuentes/print-map';
 import { fetchUbicacionById } from "@/app/lib/data";
 import { fetchFuentesByUbicacionId } from '@/app/lib/data';
+import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 // import { notFound } from 'next/navigation';
+import { CreateFuente } from '@/app/ui/fuentes/buttons';
+
 export const metadata: Metadata = {
   title: 'Clientes',
 };
@@ -17,9 +20,24 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
   
 return (
-  <main>
-    <Map ubicacion={ubicacion} fuentes={fuentes} /> 
-  </main>
+  
+  <div className="w-full">
+ <Breadcrumbs
+        breadcrumbs={[
+          { label: 'Fuentes', href: '/dashboard/fuentes' },
+          {
+            label: `Fuentes de ${ubicacion[0].name}`,
+            href: `/dashboard/fuentes/${id}`,
+            active: true,
+          },
+        ]}
+      /> 
+            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+            
+            <CreateFuente id={id}/>
+            </div>
+            <Map ubicacion={ubicacion} fuentes={fuentes} />
+  </div>
 );
 }
 
