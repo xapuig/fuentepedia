@@ -8,7 +8,7 @@ import {
   import { useMemo, useState } from 'react';
   import styles from '../../ui/home.module.css';
   import { FuenteField, UbicacionField } from '@/app/lib/definitions';
-  import { EditFuente } from '@/app/ui/fuentes/buttons';
+  import { DeleteFuente, EditFuente } from '@/app/ui/fuentes/buttons';
 
 
   export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
@@ -93,6 +93,7 @@ import {
                     <div>
                       <h2 className='mb-3'>{fuente.name}</h2>
                       <EditFuente id={fuente.id}/>
+                      <DeleteFuente id={fuente.id}/>
                     </div>
                   </InfoWindow>
                 ) : null}

@@ -1,3 +1,4 @@
+import { deleteFuente } from "@/app/lib/actions";
 import Link from "next/link";
 
 export function CreateFuente({ id }: { id: string }) {
@@ -17,7 +18,19 @@ export function CreateFuente({ id }: { id: string }) {
         href={`/dashboard/fuentes/${id}/edit`}
         className="mt-6 text-blue-500 hover:text-blue-400"
       >
-        <span className="hidden md:block">Editar</span>
+        Editar
       </Link>
     );
   }
+
+  export function DeleteFuente({ id }: { id: string }) {
+    const deleteFuentewithId = deleteFuente.bind(null, id);
+    return (
+      <form action={deleteFuentewithId}>
+        <button className="text-red-500 hover:text-red-400">
+          Borrar
+        </button>
+      </form>
+    );
+  }
+  
