@@ -90,6 +90,7 @@ export type UbicacionField = {
 
 export type FuenteField = {
   id: string;
+  ubicacion_id: string;
   name: string;
   lat: number;
   lng: number;

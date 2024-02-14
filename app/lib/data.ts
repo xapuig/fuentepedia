@@ -229,6 +229,22 @@ export async function fetchUbicacionById(id: string) {
   }
 }
 
+export async function fetchFuenteById(id: string) {
+  try {
+    noStore();
+    const data = await sql<FuenteField>`
+      SELECT *
+      FROM fuentes
+      WHERE fuentes.id = ${id};
+    `;
+    const fuente = data.rows;
+    return fuente;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch fuente.');
+  }
+}
+
 export async function fetchFuentesByUbicacionId(id: string) {
   try {
     noStore();

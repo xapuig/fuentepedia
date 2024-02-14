@@ -261,6 +261,39 @@ redirect(`/dashboard/fuentes/${ubicacionId}`);
   
 }
 
+const UpdateFuente = CreateFuenteSchema.omit({ id: true});
+export async function updateFuente(id: string, prevState: State2, formData: FormData) {
+  const validatedFields = UpdateFuente.safeParse({
+    ubicacionId: formData.get('ubicacionId'),
+    name: formData.get('name'),
+    lat: formData.get('lat'),
+    lng: formData.get('lng'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Faltan campos, no se pudo actualizar la fuente.',
+    };
+  }
+
+  const { ubicacionId, name, lat, lng } = validatedFields.data;
+ try {
+    await sql`
+    UPDATE fuentes
+    SET ubicacion_id = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}
+    WHERE id = ${id}
+     `;
+ } catch (error) {
+   return {
+     message: 'DB Error: No se pudo actualizar la fuente.',
+   }
+ }
+ 
+ revalidatePath(`/dashboard/fuentes/${ubicacionId}`);
+ redirect(`/dashboard/fuentes/${ubicacionId}`);
+}
+
 export async function deleteFuente(id: string) {
 
   try {

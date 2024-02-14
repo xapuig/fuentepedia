@@ -8,6 +8,7 @@ import {
   import { useMemo, useState } from 'react';
   import styles from '../../ui/home.module.css';
   import { FuenteField, UbicacionField } from '@/app/lib/definitions';
+  import { EditFuente } from '@/app/ui/fuentes/buttons';
 
 
   export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
@@ -90,7 +91,8 @@ import {
                 {activeMarker === fuente.id ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <div>
-                      {fuente.name}
+                      <h2 className='mb-3'>{fuente.name}</h2>
+                      <EditFuente id={fuente.id}/>
                     </div>
                   </InfoWindow>
                 ) : null}
