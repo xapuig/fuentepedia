@@ -5,13 +5,14 @@ import {
     MarkerF,
     InfoWindow,
   } from '@react-google-maps/api';
-  import { useMemo, useState } from 'react';
-  import styles from '../../ui/home.module.css';
-  import { FuenteField, UbicacionField } from '@/app/lib/definitions';
-  import { DeleteFuente, EditFuente } from '@/app/ui/fuentes/buttons';
+import { useMemo, useState } from 'react';
+import styles from '../../ui/home.module.css';
+import { FuenteField, UbicacionField } from '@/app/lib/definitions';
+import { DeleteFuente, EditFuente } from '@/app/ui/fuentes/buttons';
 
 
-  export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
+
+export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
     const [activeMarker, setActiveMarker] = useState(null);
 
     const handleActiveMarker = (marker: any) => {
@@ -23,6 +24,7 @@ import {
 
     const handleClickOnMap = () => {
       setActiveMarker(null);
+      
     }
 
   const [lat, setLat] = useState(Number(ubicacion[0].lat));
@@ -30,22 +32,22 @@ import {
 
   const libraries = useMemo(() => ['places'], []);
   const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
-  const myStyles = [
+  const myStyles = useMemo(() => [
     {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [
-              { visibility: "off" }
-        ]
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+            { visibility: "off" }
+      ]
     },
     {
       featureType: "transit",
-        elementType: "labels",
-        stylers: [
-              { visibility: "off" }
-        ]
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
     }
-];
+  ], []);
 
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
@@ -55,7 +57,7 @@ import {
       styles: myStyles,
       minZoom: 15,
     }),
-    []
+    [myStyles]
   );
 
   const { isLoaded } = useLoadScript({
@@ -91,7 +93,7 @@ import {
                 {activeMarker === fuente.id ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <div>
-                      <h2 className='mb-3'>{fuente.name}</h2>
+                      <h2 className='mb-3'>{fuente.name}</h2>      
                       <EditFuente id={fuente.id}/>
                       <DeleteFuente id={fuente.id}/>
                     </div>

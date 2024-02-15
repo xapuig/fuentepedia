@@ -16,7 +16,7 @@ export function CreateFuente({ id }: { id: string }) {
     return (
       <Link
         href={`/dashboard/fuentes/${id}/edit`}
-        className="mt-6 text-blue-500 hover:text-blue-400"
+        className="mt-2 text-blue-500 hover:text-blue-400"
       >
         Editar
       </Link>
@@ -27,7 +27,7 @@ export function CreateFuente({ id }: { id: string }) {
     const deleteFuentewithId = deleteFuente.bind(null, id);
     return (
       <form action={deleteFuentewithId}>
-        <button className="text-red-500 hover:text-red-400">
+        <button className="mt-2 text-red-500 hover:text-red-400">
           Borrar
         </button>
       </form>

@@ -42,22 +42,22 @@ import { number } from 'zod';
 
   const libraries = useMemo(() => ['places'], []);
   const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
-  const myStyles = [
+  const myStyles = useMemo(() => [
     {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [
-              { visibility: "off" }
-        ]
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+            { visibility: "off" }
+      ]
     },
     {
       featureType: "transit",
-        elementType: "labels",
-        stylers: [
-              { visibility: "off" }
-        ]
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
     }
-];
+  ], []);
 
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
@@ -67,7 +67,7 @@ import { number } from 'zod';
       styles: myStyles,
       minZoom: 15,
     }),
-    []
+    [myStyles]
   );
 
   const { isLoaded } = useLoadScript({
