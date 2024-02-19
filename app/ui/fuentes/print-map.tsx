@@ -8,12 +8,17 @@ import {
 import { useMemo, useState } from 'react';
 import styles from '../../ui/home.module.css';
 import { FuenteField, UbicacionField } from '@/app/lib/definitions';
-import { DeleteFuente, EditFuente } from '@/app/ui/fuentes/buttons';
+import { CreateFuente, CreateFuenteInfoWindow, DeleteFuente, EditFuente } from '@/app/ui/fuentes/buttons';
 
 
 
 export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
     const [activeMarker, setActiveMarker] = useState(null);
+    const [activeNuevo, setActiveNuevo] = useState(false);
+    const [LatitudNuevo, setLatitud] = useState(0);
+    const [LongitudNuevo, setLongitud] = useState(0);
+    
+    
 
     const handleActiveMarker = (marker: any) => {
       if (marker === activeMarker) {
@@ -22,8 +27,14 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
       setActiveMarker(marker);
     };
 
-    const handleClickOnMap = () => {
+    const handleClickOnMap = (e: any, activo: any) => {
       setActiveMarker(null);
+      setActiveNuevo(false);
+      if (activo === true) (
+        setLatitud(e.latLng.lat()),
+        setLongitud(e.latLng.lng()),
+        setActiveNuevo(true)
+      );
       
     }
 
@@ -34,7 +45,7 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
   const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
   const myStyles = useMemo(() => [
     {
-      featureType: "poi",
+      featureType: "poi.business",
       elementType: "labels",
       stylers: [
             { visibility: "off" }
@@ -56,6 +67,7 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
       scrollwheel: true,
       styles: myStyles,
       minZoom: 15,
+      
     }),
     [myStyles]
   );
@@ -78,8 +90,18 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
         mapTypeId={google.maps.MapTypeId.ROADMAP}
         mapContainerStyle={{ width: '50%', height: '50vh' }}
         onLoad={(map) => console.log('Map Loaded')}
-        onClick={() => handleClickOnMap()}
+        onClick={(e) => handleClickOnMap(e, true)}
       >
+        {activeNuevo === true ? (
+          <MarkerF 
+            position={{ lat: LatitudNuevo, lng: LongitudNuevo}} >
+            <InfoWindow>
+              <div>
+                <CreateFuenteInfoWindow id={ubicacion[0].id} lat={LatitudNuevo} lng={LongitudNuevo}/>
+              </div>
+            </InfoWindow>
+          </MarkerF>
+        ) : false}
          {fuentes.map((fuente) => (
               <MarkerF 
               key={fuente.id} 

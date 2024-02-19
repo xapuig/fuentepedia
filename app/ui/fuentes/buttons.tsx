@@ -12,6 +12,18 @@ export function CreateFuente({ id }: { id: string }) {
     );
   }
 
+
+  export function CreateFuenteInfoWindow({ id, lat, lng }: { id: string, lat: number, lng: number }) {
+    return (
+      <Link 
+      href={{ pathname: `/dashboard/fuentes/${id}/create`, query: { lat: lat, lng: lng } }}
+      className="mt-2 text-blue-500 hover:text-blue-400">
+        Añadir fuente
+      </Link>
+     
+    );
+  }
+
   export function EditFuente({ id }: { id: string }) {
     return (
       <Link

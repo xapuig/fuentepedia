@@ -15,11 +15,11 @@ import { Button } from '@/app/ui/button';
 import { number } from 'zod';
 
 
-  export default function MapCreateMarker({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
+  export default function MapCreateMarker({ ubicacion, fuentes, latnuevo, lngnuevo}: { ubicacion: UbicacionField[], fuentes: FuenteField[], latnuevo: number, lngnuevo: number }) {
     
     const [activeMarker, setActiveMarker] = useState(null);
-    const [Latitud, setLatitud] = useState(0);
-    const [Longitud, setLongitud] = useState(0);
+    const [Latitud, setLatitud] = useState(latnuevo);
+    const [Longitud, setLongitud] = useState(lngnuevo);
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(createFuente, initialState);
     
@@ -189,7 +189,6 @@ import { number } from 'zod';
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
         mapContainerStyle={{ width: '50%', height: '50vh' }}
-        onLoad={(map) => console.log('Map Loaded')}
         onClick={ev => {
           if (ev.latLng) {
             handleClickOnMap();
@@ -202,7 +201,6 @@ import { number } from 'zod';
               <MarkerF 
               key={fuente.id} 
               position={{ lat: Number(fuente.lat), lng: Number(fuente.lng) }} 
-              onLoad={() => console.log('Marker Loaded')}
               icon={{
                 url: 'https://i.imgur.com/HY488rK.png',
               }}
