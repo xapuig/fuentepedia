@@ -14,14 +14,14 @@ import { CreateFuente, CreateFuenteInfoWindow, DeleteFuente, EditFuente } from '
 
 export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[], fuentes: FuenteField[] }) {
     const [activeMarker, setActiveMarker] = useState(null);
-    const [activeNuevo, setActiveNuevo] = useState(false);
+    const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
     const [LatitudNuevo, setLatitud] = useState(0);
     const [LongitudNuevo, setLongitud] = useState(0);
     
     
 
     const handleActiveMarker = (marker: any) => {
-      setActiveNuevo(false);
+      setActiveMarkerNuevo(false);
       if (marker === activeMarker) {
         return;
       }
@@ -30,19 +30,19 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
 
     const handleClickOnMap = (e: any, activo: any) => {
       setActiveMarker(null);
-      setActiveNuevo(false);
+      setActiveMarkerNuevo(false);
       if (activo === true) (
         setLatitud(e.latLng.lat()),
         setLongitud(e.latLng.lng()),
-        setActiveNuevo(true)
+        setActiveMarkerNuevo(true)
       );
-      
     }
 
   const [lat, setLat] = useState(Number(ubicacion[0].lat));
   const [lng, setLng] = useState(Number(ubicacion[0].lng));
 
   const libraries = useMemo(() => ['places'], []);
+  
   const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
   const myStyles = useMemo(() => [
     {
@@ -86,17 +86,17 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
     <div className={styles.homeWrapper}>
       <GoogleMap
         options={mapOptions}
-        zoom={14}
+        zoom={17}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '75%', height: '70vh' }}
+        mapContainerStyle={{ width: '75vw', height: '70vh' }}
         onLoad={(map) => console.log('Map Loaded')}
         onClick={(e) => handleClickOnMap(e, true)}
       >
-        {activeNuevo === true ? (
+        {activeMarkerNuevo === true ? (
           <MarkerF 
             position={{ lat: LatitudNuevo, lng: LongitudNuevo}} >
-            <InfoWindow onCloseClick={() => setActiveNuevo(false)}>
+            <InfoWindow onCloseClick={() => setActiveMarkerNuevo(false)}>
               <div>
                 <CreateFuenteInfoWindow id={ubicacion[0].id} lat={LatitudNuevo} lng={LongitudNuevo}/>
               </div>

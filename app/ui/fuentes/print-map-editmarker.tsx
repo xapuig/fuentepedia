@@ -19,6 +19,7 @@ import { Button } from '@/app/ui/button';
     const [activeMarker, setActiveMarker] = useState(null);
     const [Latitud, setLatitud] = useState(0);
     const [Longitud, setLongitud] = useState(0);
+    const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
     const updateFuenteWithId = updateFuente.bind(null, fuente_a_editar[0].id);
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(updateFuenteWithId, initialState);
@@ -31,17 +32,20 @@ import { Button } from '@/app/ui/button';
       setActiveMarker(marker);
     };
 
-    const handleClickOnMap = () => {
-      setActiveMarker(null)
-      
+    const handleClickOnMap = (e: any, activo: any) => {
+      setActiveMarker(null);
+      setActiveMarkerNuevo(false);
+      if (activo === true) (
+        setLatitud(e.latLng.lat()),
+        setLongitud(e.latLng.lng()),
+        setActiveMarkerNuevo(true)
+      );
     }
 
   
-  const [lat, setLat] = useState(Number(ubicacion[0].lat));
-  const [lng, setLng] = useState(Number(ubicacion[0].lng));
-
-  const libraries = useMemo(() => ['places'], []);
-  const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
+ 
+ 
+  const mapCenter = useMemo(() => ({ lat: Number(fuente_a_editar[0].lat), lng: Number(fuente_a_editar[0].lng) }), [fuente_a_editar]);
   const myStyles = useMemo(() => [
     {
       featureType: "poi",
@@ -184,21 +188,20 @@ import { Button } from '@/app/ui/button';
         <Button type="submit">Editar fuente</Button>
       </div>
     </form>
-      <GoogleMap
+    <GoogleMap
         options={mapOptions}
-        zoom={14}
+        zoom={17}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '50%', height: '50vh' }}
+        mapContainerStyle={{ width: '75vw', height: '50vh' }}
         onLoad={(map) => console.log('Map Loaded')}
-        onClick={ev => {
-          if (ev.latLng) {
-            handleClickOnMap();
-            setLatitud(ev.latLng.lat());
-            setLongitud(ev.latLng.lng());
-          }
-        }}
+        onClick={(e) => handleClickOnMap(e, true)}
       >
+        {activeMarkerNuevo === true ? (
+          <MarkerF 
+            position={{ lat: Number(Latitud), lng: Number(Longitud)}} >
+          </MarkerF>
+        ) : false}
          {fuentes.map((fuente) => (
               <MarkerF 
               key={fuente.id} 
@@ -212,7 +215,7 @@ import { Button } from '@/app/ui/button';
                 {activeMarker === fuente.id ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <div>
-                      {fuente.name}
+                      <h2 className='mb-3'>{fuente.name}</h2>
                     </div>
                   </InfoWindow>
                 ) : null}

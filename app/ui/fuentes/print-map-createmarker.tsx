@@ -20,6 +20,7 @@ import { number } from 'zod';
     const [activeMarker, setActiveMarker] = useState(null);
     const [Latitud, setLatitud] = useState(latnuevo);
     const [Longitud, setLongitud] = useState(lngnuevo);
+    const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(true);
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(createFuente, initialState);
     
@@ -31,20 +32,25 @@ import { number } from 'zod';
       setActiveMarker(marker);
     };
 
-    const handleClickOnMap = () => {
-      setActiveMarker(null)
-      
+    const handleClickOnMap = (e: any, activo: any) => {
+      setActiveMarker(null);
+      setActiveMarkerNuevo(false);
+      if (activo === true) (
+        setLatitud(e.latLng.lat()),
+        setLongitud(e.latLng.lng()),
+        setActiveMarkerNuevo(true)
+      );
     }
-
-  
-  const [lat, setLat] = useState(Number(ubicacion[0].lat));
-  const [lng, setLng] = useState(Number(ubicacion[0].lng));
-
   const libraries = useMemo(() => ['places'], []);
-  const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
+
+  if (isNaN(Number(latnuevo)) || isNaN(Number(lngnuevo))) {
+    latnuevo = ubicacion[0].lat;
+    lngnuevo = ubicacion[0].lng;
+  }
+  const mapCenter = useMemo(() => ({ lat: Number(latnuevo), lng: Number(lngnuevo) }), [latnuevo, lngnuevo]);
   const myStyles = useMemo(() => [
     {
-      featureType: "poi",
+      featureType: "poi.business",
       elementType: "labels",
       stylers: [
             { visibility: "off" }
@@ -62,7 +68,7 @@ import { number } from 'zod';
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
       disableDefaultUI: false,
-      clickableIcons: true,
+      clickableIcons: false,
       scrollwheel: true,
       styles: myStyles,
       minZoom: 15,
@@ -86,7 +92,7 @@ import { number } from 'zod';
       <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
       <input type ="hidden" name="ubicacionId" id="ubicacionId" value={ubicacion[0].id} />
-        {/* Invoice Amount */}
+        {/* Nombre */}
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
             Nombre
@@ -112,7 +118,7 @@ import { number } from 'zod';
             ))}
           </div>
         </div>
-        {/* Invoice Amount */}
+        {/* Latitud */}
         <div className="mb-4">
           <label htmlFor="lat" className="mb-2 block text-sm font-medium">
             Latitud
@@ -142,7 +148,7 @@ import { number } from 'zod';
             ))}
           </div>
         </div>
-        {/* Invoice Amount */}
+        {/* Longitud */}
         <div className="mb-4">
           <label htmlFor="lng" className="mb-2 block text-sm font-medium">
             Longitud
@@ -183,24 +189,25 @@ import { number } from 'zod';
         <Button type="submit">Crear fuente</Button>
       </div>
     </form>
-      <GoogleMap
+    <GoogleMap
         options={mapOptions}
-        zoom={14}
+        zoom={17}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '50%', height: '50vh' }}
-        onClick={ev => {
-          if (ev.latLng) {
-            handleClickOnMap();
-            setLatitud(ev.latLng.lat());
-            setLongitud(ev.latLng.lng());
-          }
-        }}
+        mapContainerStyle={{ width: '75vw', height: '50vh' }}
+        onLoad={(map) => console.log('Map Loaded')}
+        onClick={(e) => handleClickOnMap(e, true)}
       >
+        {activeMarkerNuevo === true ? (
+          <MarkerF 
+            position={{ lat: Number(Latitud), lng: Number(Longitud)}} >
+          </MarkerF>
+        ) : false}
          {fuentes.map((fuente) => (
               <MarkerF 
               key={fuente.id} 
               position={{ lat: Number(fuente.lat), lng: Number(fuente.lng) }} 
+              onLoad={() => console.log('Marker Loaded')}
               icon={{
                 url: 'https://i.imgur.com/HY488rK.png',
               }}
@@ -209,7 +216,7 @@ import { number } from 'zod';
                 {activeMarker === fuente.id ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <div>
-                      {fuente.name}
+                      <h2 className='mb-3'>{fuente.name}</h2>
                     </div>
                   </InfoWindow>
                 ) : null}
