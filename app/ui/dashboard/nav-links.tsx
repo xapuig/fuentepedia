@@ -5,6 +5,7 @@ import {
   HomeIcon,
   DocumentDuplicateIcon,
   MapPinIcon,
+  GlobeAltIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,7 +14,11 @@ import { usePathname } from 'next/navigation';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Fuentes', href: '/dashboard/fuentes', icon: MapPinIcon }
+  { name: 'Fuentes', href: '/dashboard/fuentes', icon: MapPinIcon },
+  { name: 'Ubicaciones', href: '/dashboard/ubicaciones', icon: GlobeAltIcon }
+  // { name: 'Invoices', href: '/dashboard/invoices', icon: DocumentDuplicateIcon },
+  // { name: 'Ubicaciones', href: '/dashboard/ubicaciones', icon: HomeIcon },
+  // { name: 'Users', href: '/dashboard/users', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {
