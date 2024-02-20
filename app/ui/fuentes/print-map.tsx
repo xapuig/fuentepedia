@@ -109,8 +109,10 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
               position={{ lat: Number(fuente.lat), lng: Number(fuente.lng) }} 
               onLoad={() => console.log('Marker Loaded')}
               icon={{
-                url: 'https://i.imgur.com/HY488rK.png',
+                url: '/fuente_resized.png',
+                labelOrigin: new google.maps.Point(0, -15),
               }}
+              label={{ text: fuente.name, color: 'blue' }}
               onClick={() => handleActiveMarker(fuente.id)}                
               >
                 {activeMarker === fuente.id ? (
