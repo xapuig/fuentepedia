@@ -17,7 +17,7 @@ export function CreateFuente({ id }: { id: string }) {
     return (
       <Link 
       href={{ pathname: `/dashboard/fuentes/${id}/create`, query: { lat: lat, lng: lng } }}
-      className="mt-2 text-blue-500 hover:text-blue-400">
+      className="text-blue-600 hover:text-blue-300">
         Añadir fuente
       </Link>
      

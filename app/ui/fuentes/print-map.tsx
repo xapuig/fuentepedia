@@ -21,6 +21,7 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
     
 
     const handleActiveMarker = (marker: any) => {
+      setActiveNuevo(false);
       if (marker === activeMarker) {
         return;
       }
@@ -63,7 +64,7 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
   const mapOptions = useMemo<google.maps.MapOptions>(
     () => ({
       disableDefaultUI: false,
-      clickableIcons: true,
+      clickableIcons: false,
       scrollwheel: true,
       styles: myStyles,
       minZoom: 15,
@@ -88,14 +89,14 @@ export default function Map({ ubicacion, fuentes}: { ubicacion: UbicacionField[]
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: '50%', height: '50vh' }}
+        mapContainerStyle={{ width: '75%', height: '70vh' }}
         onLoad={(map) => console.log('Map Loaded')}
         onClick={(e) => handleClickOnMap(e, true)}
       >
         {activeNuevo === true ? (
           <MarkerF 
             position={{ lat: LatitudNuevo, lng: LongitudNuevo}} >
-            <InfoWindow>
+            <InfoWindow onCloseClick={() => setActiveNuevo(false)}>
               <div>
                 <CreateFuenteInfoWindow id={ubicacion[0].id} lat={LatitudNuevo} lng={LongitudNuevo}/>
               </div>
