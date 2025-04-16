@@ -9,20 +9,23 @@ import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
 import Form from '@/app/ui/fuentes/select-form';
+const { validate, version } = require('uuid');
 
 export const metadata: Metadata = {
   title: 'Mapa de fuentes',
 };
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
+
+  if (!validate(id)) {
+    notFound();
+  }
+
   const [ubicacion, fuentes, ubicaciones] = await Promise.all([
     fetchUbicacionById(id),
     fetchFuentesByUbicacionId(id),
     fetchUbicaciones(),
   ]);
-  if (!ubicacion || !Array.isArray(ubicacion) || ubicacion.length === 0) {
-    notFound();
-  }
 
   return (
     <div className="w-full">

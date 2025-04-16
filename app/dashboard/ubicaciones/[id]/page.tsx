@@ -3,6 +3,7 @@ import Info from '@/app/ui/ubicaciones/info-ubicacion';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { fetchUbicacionById } from '@/app/lib/data';
+const { validate, version } = require('uuid');
 
 export const metadata: Metadata = {
   title: 'Información de ubicacion',
@@ -10,10 +11,12 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const [ubicacion] = await Promise.all([fetchUbicacionById(id)]);
-  if (!ubicacion || !Array.isArray(ubicacion) || ubicacion.length === 0) {
+
+  if (!validate(id)) {
     notFound();
   }
+
+  const [ubicacion] = await Promise.all([fetchUbicacionById(id)]);
 
   return (
     <div className="w-full">

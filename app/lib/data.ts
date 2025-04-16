@@ -1,7 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import { User, UbicacionField, FuenteField } from './definitions';
-const { validate, version } = require('uuid');
 
 export async function fetchUbicaciones() {
   try {
@@ -22,11 +21,6 @@ export async function fetchUbicaciones() {
 
 export async function fetchUbicacionById(id: string) {
   try {
-    // Validar el id, si no es un UUID, devolver null
-    if (!validate(id)) {
-      return null;
-    }
-
     noStore();
     const data = await sql<UbicacionField>`
       SELECT *
@@ -59,10 +53,6 @@ export async function fetchFuenteById(id: string) {
 
 export async function fetchFuentesByUbicacionId(id: string) {
   try {
-    // Validar el id, si no es un UUID, devolver null
-    if (!validate(id)) {
-      return null;
-    }
     noStore();
     const data = await sql<FuenteField>`
       SELECT *
