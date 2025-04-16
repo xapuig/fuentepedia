@@ -1,4 +1,4 @@
-import AcmeLogo from '@/app/ui/acme-logo';
+import AcmeLogo from '@/app/ui/fuentepedia-logo';
 import RegisterForm from '@/app/ui/register-form';
 import { Metadata } from 'next';
 import Link from 'next/link'
