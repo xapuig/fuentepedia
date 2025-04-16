@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     fetchFuentesByUbicacionId(id),
     fetchUbicaciones(),
   ]);
-  if (!ubicacion) {
+  if (!ubicacion || !Array.isArray(ubicacion) || ubicacion.length === 0) {
     notFound();
   }
 

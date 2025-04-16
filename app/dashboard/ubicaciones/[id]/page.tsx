@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const [ubicacion] = await Promise.all([fetchUbicacionById(id)]);
-  if (!ubicacion)  {
+  if (!ubicacion || !Array.isArray(ubicacion) || ubicacion.length === 0) {
     notFound();
   }
 
