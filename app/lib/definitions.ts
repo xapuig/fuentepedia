@@ -23,4 +23,5 @@ export type FuenteField = {
   name: string;
   lat: number;
   lng: number;
+  imgUrl: string;
 };

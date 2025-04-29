@@ -18,6 +18,10 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const [ubicacion] = await Promise.all([fetchUbicacionById(id)]);
 
+  if (!ubicacion || ubicacion.length === 0) {
+    notFound();
+  }
+
   return (
     <div className="w-full">
       <Breadcrumbs

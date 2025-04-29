@@ -27,6 +27,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     fetchUbicaciones(),
   ]);
 
+  if (!ubicacion || ubicacion.length === 0) {
+    notFound();
+  }
+
   return (
     <div className="w-full">
       <Breadcrumbs

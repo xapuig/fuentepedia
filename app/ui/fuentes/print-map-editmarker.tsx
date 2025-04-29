@@ -209,7 +209,7 @@ import { Button } from '@/app/ui/button';
               onLoad={() => console.log('Marker Loaded')}
               icon={{
                 url: '/fuente_resized.png',
-                labelOrigin: new google.maps.Point(0, -15),
+                labelOrigin: new google.maps.Point(15, -15),
               }}
               label={{ text: fuente.name, color: 'blue' }}
               onClick={() => handleActiveMarker(fuente.id)}                
