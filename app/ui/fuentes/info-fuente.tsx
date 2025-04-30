@@ -29,15 +29,16 @@ export function InfoFuente({ fuente, onClose }: Props) {
           </div>
         </div>
         {/* Imagen*/}
-        <div className="flex border-b justify-center p-4 overflow-hidden ">
-          <Image
-            src={fuente.imgUrl}
-            alt={fuente.name}
-            width={600}
-            height={800}
-            className='rounded-md mx-auto'
-            
-          ></Image>
+        <div>
+          <div className="relative max-h-[30vh] overflow-y-auto border-b p-4">
+            <Image
+              src={fuente.imgUrl}
+              alt={fuente.name}
+              width={250}
+              height={250}
+              className="mx-auto rounded-md"
+            ></Image>
+          </div>
         </div>
 
         {/* Cuerpo */}

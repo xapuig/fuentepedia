@@ -26,9 +26,10 @@ const ubicaciones = [
 const fuentes = [
   {
     ubicacion_id: ubicaciones[0].id,
-    name: 'Fuente 1',
-    lat: '38.815680',
-    lng: '-0.607100',
+    name: 'Font Sant Antoni',
+    lat: '38.819665',
+    lng: '-0.604492',
+    imgUrl: 'https://i.imgur.com/iT4wb6F.png',
   },
   {
     ubicacion_id: ubicaciones[0].id,

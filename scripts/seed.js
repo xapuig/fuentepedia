@@ -105,8 +105,8 @@ async function seedFuentes(client) {
     const insertedFuentes = await Promise.all(
       fuentes.map(
         (fuente) => client.sql`
-        INSERT INTO fuentes (ubicacion_id, name, lat, lng)
-        VALUES (${fuente.ubicacion_id}, ${fuente.name}, ${fuente.lat}, ${fuente.lng})
+        INSERT INTO fuentes (ubicacion_id, name, lat, lng, "imgUrl")
+        VALUES (${fuente.ubicacion_id}, ${fuente.name}, ${fuente.lat}, ${fuente.lng}, ${fuente.imgUrl})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
