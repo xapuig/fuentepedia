@@ -103,6 +103,9 @@ const CreateFuenteSchema = z.object({
     .number()
     .lt(180, { message: 'Error, escribe un número entre -180 y 180' })
     .gt(-180, { message: 'Error, escribe un número entre -180 y 180' }),
+  imgUrl: z
+    .string()
+    .url({ message: 'Error, escribe una URL válida para la imagen' }),
 });
 
 const CreateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
@@ -113,6 +116,7 @@ export type State2 = {
     name?: string[];
     lat?: string[];
     lng?: string[];
+    imgUrl?: string[];
   };
   message?: string | null;
 };
@@ -122,6 +126,7 @@ export async function createFuente(prevState: State2, formData: FormData) {
     name: formData.get('name'),
     lat: formData.get('lat'),
     lng: formData.get('lng'),
+    imgUrl: formData.get('imgUrl'),
   });
 
   if (!validatedFields.success) {
@@ -130,12 +135,11 @@ export async function createFuente(prevState: State2, formData: FormData) {
       message: 'Faltan campos, error al crear la fuente',
     };
   }
-  const { ubicacionId, name, lat, lng } = validatedFields.data;
-
+  const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
   try {
     await sql`
-    INSERT INTO fuentes (ubicacion_id, name, lat, lng)
-    VALUES (${ubicacionId}, ${name}, ${lat}, ${lng})
+    INSERT INTO fuentes (ubicacion_id, name, lat, lng, "imgUrl")
+    VALUES (${ubicacionId}, ${name}, ${lat}, ${lng}, ${imgUrl})
   `;
   } catch (error) {
     return {
@@ -158,6 +162,7 @@ export async function updateFuente(
     name: formData.get('name'),
     lat: formData.get('lat'),
     lng: formData.get('lng'),
+    imgUrl: formData.get('imgUrl'),
   });
 
   if (!validatedFields.success) {
@@ -167,11 +172,11 @@ export async function updateFuente(
     };
   }
 
-  const { ubicacionId, name, lat, lng } = validatedFields.data;
+  const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
   try {
     await sql`
     UPDATE fuentes
-    SET ubicacion_id = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}
+    SET ubicacion_id = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
     WHERE id = ${id}
      `;
   } catch (error) {

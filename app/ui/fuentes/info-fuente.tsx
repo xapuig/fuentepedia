@@ -2,7 +2,7 @@
 import { FuenteField } from '@/app/lib/definitions';
 import { EditFuente, DeleteFuente } from '@/app/ui/fuentes/buttons';
 import { XCircleIcon } from '@heroicons/react/24/outline';
-
+import Image from 'next/image';
 type Props = {
   fuente: FuenteField | null;
   onClose: () => void;
@@ -28,6 +28,18 @@ export function InfoFuente({ fuente, onClose }: Props) {
             </button>
           </div>
         </div>
+        {/* Imagen*/}
+        <div className="flex border-b justify-center p-4 overflow-hidden ">
+          <Image
+            src={fuente.imgUrl}
+            alt={fuente.name}
+            width={600}
+            height={800}
+            className='rounded-md mx-auto'
+            
+          ></Image>
+        </div>
+
         {/* Cuerpo */}
         <div className="flex-1 overflow-y-auto p-4">
           <p className="mb-4">Lorem ipsum dolor sit amet...</p>

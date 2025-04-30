@@ -187,6 +187,32 @@ export default function MapCreateMarker({
                 ))}
             </div>
           </div>
+          {/* URL de la imagen */}
+          <div className="mb-4">
+            <label htmlFor="imgUrl" className="mb-2 block text-sm font-medium">
+              URL de la imagen
+            </label>
+            <div className="relative mt-2 rounded-md">
+              <div className="relative">
+                <input
+                  id="imgUrl"
+                  name="imgUrl"
+                  type="text"
+                  placeholder="Escribe la URL de la imagen"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  aria-describedby="imgUrl-error"
+                />
+              </div>
+            </div>
+            <div id="imgUrl-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.imgUrl &&
+                state.errors.imgUrl.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+          </div>
         </div>
         <div className="mt-6 flex justify-end gap-4">
           <Link
@@ -221,7 +247,7 @@ export default function MapCreateMarker({
             onLoad={() => console.log('Marker Loaded')}
             icon={{
               url: '/fuente_resized.png',
-              labelOrigin: new google.maps.Point(15, -15),
+              labelOrigin: new google.maps.Point(0, -15),
             }}
             label={{ text: fuente.name, color: 'blue' }}
             onClick={() => handleActiveMarker(fuente.id)}

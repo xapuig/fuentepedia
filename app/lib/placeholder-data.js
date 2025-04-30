@@ -1,5 +1,4 @@
-// This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
-// https://nextjs.org/learn/dashboard-app/fetching-data
+// Datos utilizados para rellenar la base de datos al iniciar la aplicación por primera vez
 const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
@@ -41,9 +40,6 @@ const fuentes = [
 
 module.exports = {
   users,
-  customers,
-  invoices,
-  revenue,
   ubicaciones,
   fuentes,
 };
