@@ -1,6 +1,6 @@
 'use client';
 import { FuenteField } from '@/app/lib/definitions';
-import { EditFuente, DeleteFuente } from '@/app/ui/fuentes/buttons';
+import { EditFuente, DeleteFuente } from '@/app/ui/ubicaciones/fuentes/buttons';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 type Props = {
@@ -18,8 +18,8 @@ export function InfoFuente({ fuente, onClose }: Props) {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <h2 className="text-xl font-bold">{fuente.name}</h2>
           <div className="flex items-center space-x-2">
-            <EditFuente id={fuente.id} />
-            <DeleteFuente id={fuente.id} onClose={onClose} />
+            <EditFuente ubicacionId={fuente.ubicacion_id} id={fuente.id} />
+            <DeleteFuente ubicacionId={fuente.ubicacion_id} id={fuente.id} onClose={onClose} />
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 focus:outline-none"

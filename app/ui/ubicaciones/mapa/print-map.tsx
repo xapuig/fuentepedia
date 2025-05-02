@@ -6,15 +6,15 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import { useMemo, useState } from 'react';
-import styles from '../../ui/home.module.css';
+import styles from '@/app/ui/home.module.css';
 import { FuenteField, UbicacionField } from '@/app/lib/definitions';
 import {
   CreateFuente,
   CreateFuenteInfoWindow,
   DeleteFuente,
   EditFuente,
-} from '@/app/ui/fuentes/buttons';
-import { InfoFuente } from '@/app/ui/fuentes/info-fuente';
+} from '@/app/ui/ubicaciones/fuentes/buttons';
+import { InfoFuente } from '@/app/ui/ubicaciones/fuentes/info-fuente';
 
 export default function Map({
   ubicacion,

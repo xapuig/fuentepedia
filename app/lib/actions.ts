@@ -147,8 +147,8 @@ export async function createFuente(prevState: State2, formData: FormData) {
     };
   }
 
-  revalidatePath(`/dashboard/fuentes/${ubicacionId}`);
-  redirect(`/dashboard/fuentes/${ubicacionId}`);
+  revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+  redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
 }
 
 const UpdateFuente = CreateFuenteSchema.omit({ id: true });
@@ -185,14 +185,14 @@ export async function updateFuente(
     };
   }
 
-  revalidatePath(`/dashboard/fuentes/${ubicacionId}`);
-  redirect(`/dashboard/fuentes/${ubicacionId}`);
+  revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+  redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
 }
 
-export async function deleteFuente(id: string) {
+export async function deleteFuente(ubicacionId: string, id: string) {
   try {
     await sql`DELETE FROM fuentes WHERE id = ${id}`;
-    revalidatePath(`/dashboard/fuentes/${id}`);
+    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
     return { message: 'Fuente borrada.' };
   } catch (error) {
     return {

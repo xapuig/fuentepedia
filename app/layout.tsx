@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: '%s | Fuentepedia',
     default: 'Fuentepedia',
   },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
+  description: 'Fuentepedia, conoce tus fuentes.',
   metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
 };
 

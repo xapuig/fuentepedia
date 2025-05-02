@@ -6,7 +6,7 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import { useMemo, useState } from 'react';
-import styles from '../../ui/home.module.css';
+import styles from '@/app/ui/home.module.css';
 import { FuenteField, UbicacionField } from '@/app/lib/definitions';
 import { useFormState } from 'react-dom';
 import { updateFuente } from '@/app/lib/actions';
@@ -215,7 +215,7 @@ export default function MapEditMarker({
         </div>
         <div className="mt-6 flex justify-end gap-4">
           <Link
-            href={'/dashboard/fuentes/' + ubicacion[0].id}
+            href={'/dashboard/ubicaciones/' + ubicacion[0].id + '/mapa'}
             className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
           >
             Cancelar

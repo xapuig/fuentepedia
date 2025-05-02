@@ -11,7 +11,6 @@ import { usePathname } from 'next/navigation';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Fuentes', href: '/dashboard/fuentes', icon: MapPinIcon },
   { name: 'Ubicaciones', href: '/dashboard/ubicaciones', icon: GlobeAltIcon }
 ];
 

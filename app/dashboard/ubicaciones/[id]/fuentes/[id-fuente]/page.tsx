@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Map from '@/app/ui/fuentes/print-map';
+import Map from '@/app/ui/ubicaciones/mapa/print-map';
 import {
   fetchUbicacionById,
   fetchFuentesByUbicacionId,
@@ -7,8 +7,8 @@ import {
 } from '@/app/lib/data';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
-import { CreateFuente } from '@/app/ui/fuentes/buttons';
-import Form from '@/app/ui/fuentes/select-form';
+import { CreateFuente } from '@/app/ui/ubicaciones/fuentes/buttons';
+import Form from '@/app/ui/ubicaciones/fuentes/select-form';
 const { validate, version } = require('uuid');
 
 export const metadata: Metadata = {
