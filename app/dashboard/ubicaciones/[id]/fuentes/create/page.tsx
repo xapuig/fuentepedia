@@ -24,14 +24,14 @@ export default async function Page({
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Fuentes', href: '/dashboard/fuentes' },
+          { label: 'Ubicaciones', href: '/dashboard/ubicaciones' },
           {
             label: `${ubicacion[0].name}`,
-            href: `/dashboard/fuentes/${id}`,
+            href: `/dashboard/ubicaciones/${id}/mapa`,
           },
           {
-            label: `Crear marcador`,
-            href: `/dashboard/fuentes/${id}/create`,
+            label: `Añadir fuente`,
+            href: ``,
             active: true,
           },
         ]}
