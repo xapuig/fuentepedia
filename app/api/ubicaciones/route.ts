@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 
     if (!AdminOrEditor) {
       return NextResponse.json(
-        { error: 'No tienes permiso para modificar esta ubicación' },
+        { error: 'No tienes permiso para crear esta ubicación' },
         { status: 403 },
       );
     }
