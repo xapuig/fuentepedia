@@ -5,11 +5,11 @@ import {
   MarkerF,
   InfoWindow,
 } from '@react-google-maps/api';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useActionState, useEffect, useRef } from 'react';
 import styles from '@/app/ui/home.module.css';
-import { FuenteField, UbicacionField } from '@/app/lib/definitions';
-import { useFormState } from 'react-dom';
-import { updateFuente } from '@/app/lib/actions';
+import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
+import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
+import { updateFuente } from '@/app/lib/actions/fuentes.actions';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 
@@ -27,8 +27,21 @@ export default function MapEditMarker({
   const [Longitud, setLongitud] = useState(0);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
   const updateFuenteWithId = updateFuente.bind(null, fuente_a_editar[0].id);
-  const initialState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(updateFuenteWithId, initialState);
+  const initialState = { message: '', errors: {} };
+  const [state, dispatch] = useActionState(updateFuenteWithId, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    function watchReset(e: Event) {
+      e.preventDefault();
+    }
+    const form = formRef.current;
+    form?.addEventListener('reset', watchReset);
+
+    return () => {
+      form?.removeEventListener('reset', watchReset);
+    };
+  }, []);
 
   const handleActiveMarker = (marker: any) => {
     if (marker === activeMarker) {
@@ -90,7 +103,7 @@ export default function MapEditMarker({
 
   return (
     <div className={styles.homeWrapper}>
-      <form action={dispatch}>
+      <form action={dispatch} ref={formRef}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
           <input
             type="hidden"

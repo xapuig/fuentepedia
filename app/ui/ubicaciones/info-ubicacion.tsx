@@ -1,5 +1,5 @@
 'use client';
-import { UbicacionField } from '@/app/lib/definitions';
+import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
 import { useRouter } from 'next/navigation';
 import { UpdateUbicacion } from '@/app/ui/ubicaciones/buttons';
 import { DeleteUbicacion } from '@/app/ui/ubicaciones/buttons';

@@ -1,14 +1,13 @@
 import './ui/global.css';
-import { inter } from './ui/fonts'
+import { inter } from './ui/fonts';
 import { Metadata } from 'next';
-
 export const metadata: Metadata = {
   title: {
     template: '%s | Fuentepedia',
     default: 'Fuentepedia',
   },
   description: 'Fuentepedia, conoce tus fuentes.',
-  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+  metadataBase: new URL('https://fuentepedia.vercel.app/'),
 };
 
 export default function RootLayout({

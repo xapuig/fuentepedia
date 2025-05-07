@@ -1,7 +1,6 @@
 import FuentepediaLogo from '@/app/ui/fuentepedia-logo';
 import LoginForm from '@/app/ui/login-form';
 import { Metadata } from 'next';
- 
 
 export const metadata: Metadata = {
   title: 'Login',

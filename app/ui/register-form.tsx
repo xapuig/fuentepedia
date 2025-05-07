@@ -1,22 +1,35 @@
 'use client';
-
+import { useActionState, useEffect, useRef } from 'react';
 import { lusitana } from '@/app/ui/fonts';
 import {
   AtSymbolIcon,
   KeyIcon,
   ExclamationCircleIcon,
-  UserIcon
+  UserIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { useFormState, useFormStatus } from 'react-dom';
-import { register } from '@/app/lib/actions';
+import { useFormStatus } from 'react-dom';
+import { register } from '@/app/lib/actions/users.actions';
 
 export default function RegisterForm() {
-  const [errorMessage, formAction] = useFormState(register, null);
+  const [errorMessage, formAction] = useActionState(register, null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    function watchReset(e: Event) {
+      e.preventDefault();
+    }
+    const form = formRef.current;
+    form?.addEventListener('reset', watchReset);
+
+    return () => {
+      form?.removeEventListener('reset', watchReset);
+    };
+  }, []);
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form action={formAction} ref={formRef} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Registro con e-mail
@@ -103,7 +116,7 @@ export default function RegisterForm() {
         </div>
         <RegisterButton />
         <div
-          className="flex h-8 mt-6 items-end space-x-1"
+          className="mt-6 flex h-8 items-end space-x-1"
           aria-live="polite"
           aria-atomic="true"
         >

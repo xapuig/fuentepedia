@@ -1,3 +1,7 @@
+import { getUserAdmin } from '@/app/lib/data';
+import { getUserEditor } from '@/app/lib/data';
+import { auth } from '@/auth';
+
 export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the total number of pages is 7 or less,
   // display all pages without any ellipsis.
@@ -30,3 +34,22 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+
+export async function checkifUserisAdminOrEditor() {
+  const admin = await getUserAdmin();
+  const editor = await getUserEditor();
+  if (!admin && !editor) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export async function checkSession() {
+  const session = await auth();
+  if (!session) {
+    return false;
+  } else {
+    return true;
+  }
+}

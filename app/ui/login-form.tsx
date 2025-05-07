@@ -1,5 +1,5 @@
 'use client';
-
+import { useActionState, useEffect, useRef } from 'react';
 import { lusitana } from '@/app/ui/fonts';
 import {
   AtSymbolIcon,
@@ -8,13 +8,26 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/lib/actions';
+import { useFormStatus } from 'react-dom';
+import { authenticate } from '@/app/lib/actions/users.actions';
 
 export default function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useActionState(authenticate, undefined);
+    const formRef = useRef<HTMLFormElement>(null);
+  
+    useEffect(() => {
+      function watchReset(e: Event) {
+        e.preventDefault();
+      }
+      const form = formRef.current;
+      form?.addEventListener('reset', watchReset);
+  
+      return () => {
+        form?.removeEventListener('reset', watchReset);
+      };
+    }, []);
   return (
-    <form action={dispatch} className="space-y-3">
+    <form action={dispatch} ref={formRef} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Inicia sesión para continuar

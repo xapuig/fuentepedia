@@ -1,21 +1,34 @@
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchFuentesByUbicacionId, fetchUbicacionById, fetchFuenteById } from '@/app/lib/data';
+import {
+  fetchFuentesByUbicacionId,
+  fetchUbicacionById,
+  fetchFuenteById,
+} from '@/app/lib/data';
 import { Metadata } from 'next';
 import MapEditMarker from '@/app/ui/ubicaciones/fuentes/print-map-editmarker';
-
+import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
+import { forbidden } from 'next/navigation';
 export const metadata: Metadata = {
   title: 'Editar marcador de fuente',
 };
- 
-export default async function Page({ params }: { params: { id: string, 'id-fuente': string } }) {
-    const id = params.id;
-    const id_fuente = params['id-fuente'];
-    const fuente_a_editar = await fetchFuenteById(id_fuente);
-    const [ ubicacion, fuentes] = await Promise.all([
-      fetchUbicacionById(fuente_a_editar[0].ubicacion_id),
-      fetchFuentesByUbicacionId(fuente_a_editar[0].ubicacion_id)
-    ]);
-     
+
+export default async function Page(props: {
+  params: Promise<{ id: string; 'id-fuente': string }>;
+}) {
+  const params = await props.params;
+  const AdminOrEditor = await checkifUserisAdminOrEditor();
+  if (!AdminOrEditor) {
+    forbidden();
+  }
+  const id = params.id;
+  const id_fuente = params['id-fuente'];
+
+  const fuente_a_editar = await fetchFuenteById(id_fuente);
+  const [ubicacion, fuentes] = await Promise.all([
+    fetchUbicacionById(fuente_a_editar[0].ubicacion_id),
+    fetchFuentesByUbicacionId(fuente_a_editar[0].ubicacion_id),
+  ]);
+
   return (
     <main>
       <Breadcrumbs
@@ -32,7 +45,11 @@ export default async function Page({ params }: { params: { id: string, 'id-fuent
           },
         ]}
       />
-      <MapEditMarker ubicacion={ubicacion} fuentes={fuentes} fuente_a_editar={fuente_a_editar} />
+      <MapEditMarker
+        ubicacion={ubicacion}
+        fuentes={fuentes}
+        fuente_a_editar={fuente_a_editar}
+      />
     </main>
   );
 }

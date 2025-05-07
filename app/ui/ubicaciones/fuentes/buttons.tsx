@@ -1,5 +1,5 @@
 'use client';
-import { deleteFuente } from '@/app/lib/actions';
+import { deleteFuente } from '@/app/lib/actions/fuentes.actions';
 import Link from 'next/link';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -36,7 +36,13 @@ export function CreateFuenteInfoWindow({
   );
 }
 
-export function EditFuente({ ubicacionId, id }: { ubicacionId: string, id: string }) {
+export function EditFuente({
+  ubicacionId,
+  id,
+}: {
+  ubicacionId: string;
+  id: string;
+}) {
   return (
     <Link
       href={`/dashboard/ubicaciones/${ubicacionId}/fuentes/${id}/edit`}

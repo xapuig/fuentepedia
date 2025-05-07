@@ -7,21 +7,24 @@ import {
 } from '@react-google-maps/api';
 import { useMemo, useState } from 'react';
 import styles from '@/app/ui/home.module.css';
-import { FuenteField, UbicacionField } from '@/app/lib/definitions';
+import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
+import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
 import {
   CreateFuente,
   CreateFuenteInfoWindow,
   DeleteFuente,
   EditFuente,
 } from '@/app/ui/ubicaciones/fuentes/buttons';
-import { InfoFuente } from '@/app/ui/ubicaciones/fuentes/info-fuente';
+import { FuenteInfo } from '@/app/ui/ubicaciones/fuentes/fuente-info';
 
 export default function Map({
   ubicacion,
   fuentes,
+  AdminOrEditor,
 }: {
   ubicacion: UbicacionField[];
   fuentes: FuenteField[];
+  AdminOrEditor: boolean;
 }) {
   const [activeMarker, setActiveMarker] = useState(null);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
@@ -95,7 +98,7 @@ export default function Map({
         mapTypeId={google.maps.MapTypeId.ROADMAP}
         mapContainerStyle={{ width: '75vw', height: '70vh' }}
         onLoad={(map) => console.log('Map Loaded')}
-        onClick={(e) => handleClickOnMap(e, true)}
+        onClick={AdminOrEditor ? (e) => handleClickOnMap(e, true) : undefined}
       >
         {activeMarkerNuevo === true ? (
           <MarkerF position={{ lat: LatitudNuevo, lng: LongitudNuevo }}>
@@ -126,10 +129,12 @@ export default function Map({
           ></MarkerF>
         ))}
       </GoogleMap>
+
       {selectedFuente && (
-        <InfoFuente
+        <FuenteInfo
           fuente={selectedFuente}
           onClose={() => setSelectedFuente(null)}
+          AdminOrEditor= {AdminOrEditor}
         />
       )}
     </div>
