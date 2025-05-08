@@ -3,8 +3,9 @@ import Info from '@/app/ui/ubicaciones/info-ubicacion';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { fetchUbicacionById } from '@/app/lib/data';
+import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 const { validate, version } = require('uuid');
-
+import { forbidden } from 'next/navigation';
 export const metadata: Metadata = {
   title: 'Información de ubicacion',
 };
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = params.id;
+
+  const AdminOrEditor = await checkifUserisAdminOrEditor();
+  if (!AdminOrEditor) {
+    forbidden();
+  }
 
   if (!validate(id)) {
     notFound();

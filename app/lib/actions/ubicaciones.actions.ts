@@ -30,7 +30,7 @@ export async function createUbicacion(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Faltan campos, no se pudo actualizar la ubicación.',
+      message: 'Faltan campos, no se pudo crear la ubicación.',
     };
   }
 
@@ -121,7 +121,6 @@ export async function deleteUbicacion(id: string, apiCall: boolean = false) {
   try {
     await sql`DELETE FROM ubicaciones WHERE id = ${id}`;
   } catch (error) {
-    console.log(error);
     console.error('Error al borrar la ubicación:', error);
     throw error;
   }

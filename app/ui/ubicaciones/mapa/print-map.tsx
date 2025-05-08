@@ -9,13 +9,8 @@ import { useMemo, useState } from 'react';
 import styles from '@/app/ui/home.module.css';
 import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
 import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
-import {
-  CreateFuente,
-  CreateFuenteInfoWindow,
-  DeleteFuente,
-  EditFuente,
-} from '@/app/ui/ubicaciones/fuentes/buttons';
-import { FuenteInfo } from '@/app/ui/ubicaciones/fuentes/fuente-info';
+import { CreateFuenteInfoWindow } from '@/app/ui/fuentes/buttons';
+import { FuenteInfo } from '@/app/ui/fuentes/fuente-info';
 
 export default function Map({
   ubicacion,
@@ -76,7 +71,6 @@ export default function Map({
       clickableIcons: false,
       scrollwheel: true,
       styles: myStyles,
-      minZoom: 15,
     }),
     [myStyles],
   );
@@ -134,7 +128,7 @@ export default function Map({
         <FuenteInfo
           fuente={selectedFuente}
           onClose={() => setSelectedFuente(null)}
-          AdminOrEditor= {AdminOrEditor}
+          AdminOrEditor={AdminOrEditor}
         />
       )}
     </div>
