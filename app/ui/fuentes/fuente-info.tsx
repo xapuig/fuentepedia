@@ -1,6 +1,6 @@
 'use client';
 import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
-import { EditFuente, DeleteFuente } from '@/app/ui/ubicaciones/fuentes/buttons';
+import { EditFuente, DeleteFuente } from '@/app/ui/fuentes/buttons';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 type Props = {

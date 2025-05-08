@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
 export const CreateFuenteSchema = z.object({
-  id: z.string(),
-  ubicacionId: z.string().trim().min(1, { message: 'Ubicación requerida' }),
+  id: z.string().uuid({ message: 'Escribe una ID válida' }),
+  ubicacionId: z
+    .string({ message: 'Ubicación requerida' })
+    .uuid({ message: 'Escribe una ID de ubicación válida' }),
   name: z
     .string()
     .trim()

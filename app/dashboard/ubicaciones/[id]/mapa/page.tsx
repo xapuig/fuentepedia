@@ -7,8 +7,8 @@ import {
 } from '@/app/lib/data';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
-import { CreateFuente } from '@/app/ui/ubicaciones/fuentes/buttons';
-import Form from '@/app/ui/ubicaciones/fuentes/select-form';
+import { CreateFuente } from '@/app/ui/fuentes/buttons';
+import Form from '@/app/ui/fuentes/select-form';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 const { validate, version } = require('uuid');
 
@@ -53,9 +53,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       {AdminOrEditor ? (
         <div className="mt-4">
           <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-            <CreateFuente id={id} />
+            <CreateFuente ubicacionId={ubicacion[0].id} />
           </div>
-          <div className=''>
+          <div className="">
             <Map
               AdminOrEditor={true}
               ubicacion={ubicacion}

@@ -5,7 +5,7 @@ import {
   fetchFuenteById,
 } from '@/app/lib/data';
 import { Metadata } from 'next';
-import MapEditMarker from '@/app/ui/ubicaciones/fuentes/print-map-editmarker';
+import MapEditMarker from '@/app/ui/fuentes/print-map-editmarker';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 import { forbidden } from 'next/navigation';
 export const metadata: Metadata = {
@@ -20,8 +20,8 @@ export default async function Page(props: {
   if (!AdminOrEditor) {
     forbidden();
   }
-  const id = params.id;
-  const id_fuente = params['id-fuente'];
+
+  const id_fuente = params['id'];
 
   const fuente_a_editar = await fetchFuenteById(id_fuente);
   const [ubicacion, fuentes] = await Promise.all([

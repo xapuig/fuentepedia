@@ -88,7 +88,6 @@ export default function MapEditMarker({
       clickableIcons: true,
       scrollwheel: true,
       styles: myStyles,
-      minZoom: 15,
     }),
     [myStyles],
   );

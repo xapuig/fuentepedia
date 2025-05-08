@@ -14,19 +14,21 @@ import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 
 export default function MapCreateMarker({
-  ubicacion,
-  fuentes,
-  latnuevo,
-  lngnuevo,
+  ubicacion = [],
+  ubicaciones = [],
+  fuentes = [],
+  latnuevo = ubicacion[0]?.lat || 40.41575,
+  lngnuevo = ubicacion[0]?.lng || -3.67777,
 }: {
-  ubicacion: UbicacionField[];
-  fuentes: FuenteField[];
-  latnuevo: number;
-  lngnuevo: number;
+  ubicacion?: UbicacionField[];
+  ubicaciones?: UbicacionField[];
+  fuentes?: FuenteField[];
+  latnuevo?: number;
+  lngnuevo?: number;
 }) {
   const [activeMarker, setActiveMarker] = useState(null);
-  const [Latitud, setLatitud] = useState(latnuevo);
-  const [Longitud, setLongitud] = useState(lngnuevo);
+  const [Latitud, setLatitud] = useState<number>(Number(latnuevo));
+  const [Longitud, setLongitud] = useState<number>(Number(lngnuevo));
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(true);
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createFuente, initialState);
@@ -59,6 +61,20 @@ export default function MapCreateMarker({
         setLongitud(e.latLng.lng()),
         setActiveMarkerNuevo(true);
   };
+
+  const handleUbicacionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = e.target.value;
+    const selectedUbicacion = ubicaciones.find(
+      (ubicacion) => ubicacion.id === selectedId,
+    );
+
+    if (selectedUbicacion) {
+      setLatitud(Number(selectedUbicacion.lat));
+      setLongitud(Number(selectedUbicacion.lng));
+      setActiveMarkerNuevo(false);
+    }
+  };
+
   const libraries = useMemo(() => ['places'], []);
 
   if (isNaN(Number(latnuevo)) || isNaN(Number(lngnuevo))) {
@@ -66,8 +82,8 @@ export default function MapCreateMarker({
     lngnuevo = ubicacion[0].lng;
   }
   const mapCenter = useMemo(
-    () => ({ lat: Number(latnuevo), lng: Number(lngnuevo) }),
-    [latnuevo, lngnuevo],
+    () => ({ lat: Latitud, lng: Longitud }),
+    [Latitud, Longitud],
   );
   const myStyles = useMemo(
     () => [
@@ -91,7 +107,6 @@ export default function MapCreateMarker({
       clickableIcons: false,
       scrollwheel: true,
       styles: myStyles,
-      minZoom: 15,
     }),
     [myStyles],
   );
@@ -108,12 +123,6 @@ export default function MapCreateMarker({
     <div className={styles.homeWrapper}>
       <form action={dispatch} ref={formRef}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
-          <input
-            type="hidden"
-            name="ubicacionId"
-            id="ubicacionId"
-            value={ubicacion[0].id}
-          />
           {/* Nombre */}
           <div className="mb-4">
             <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -140,6 +149,43 @@ export default function MapCreateMarker({
                 ))}
             </div>
           </div>
+          {/* Ubicación */}
+          <div className="mb-4">
+            <label
+              htmlFor="ubicacionId"
+              className="mb-2 block text-sm font-medium"
+            >
+              Ubicación
+            </label>
+            <div className="relative mt-2 rounded-md">
+              <select
+                onChange={handleUbicacionChange}
+                id="ubicacionId"
+                name="ubicacionId"
+                className="peer mb-4 block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
+                aria-describedby="ubicacionId-error"
+                defaultValue={ubicacion[0]?.id ?? ''}
+              >
+                <option disabled value="">
+                  Selecciona una ubicación
+                </option>
+                {ubicaciones.map((ubicacion_select) => (
+                  <option key={ubicacion_select.id} value={ubicacion_select.id}>
+                    {ubicacion_select.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div id="ubicacionId-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.ubicacionId &&
+                state.errors.ubicacionId.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+          </div>
+
           {/* Latitud */}
           <div className="mb-4">
             <label htmlFor="lat" className="mb-2 block text-sm font-medium">
@@ -228,12 +274,22 @@ export default function MapCreateMarker({
           </div>
         </div>
         <div className="mt-6 flex justify-end gap-4">
-          <Link
-            href={'/dashboard/ubicaciones/' + ubicacion[0].id + '/mapa'}
-            className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-          >
-            Cancelar
-          </Link>
+          {ubicacion.length > 0 ? (
+            <Link
+              href={`/dashboard/ubicaciones/${ubicacion[0].id}/mapa`}
+              className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+            >
+              Cancelar
+            </Link>
+          ) : (
+            <Link
+              href={'/dashboard/ubicaciones'}
+              className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+            >
+              Cancelar
+            </Link>
+          )}
+
           <Button type="submit">Crear fuente</Button>
         </div>
       </form>

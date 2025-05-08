@@ -8,7 +8,16 @@ import { StateFuente } from '@/app/lib/definitions/fuentes.definitions';
 import { forbidden } from 'next/navigation';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 
-export async function createFuente(prevState: StateFuente, formData: FormData) {
+export async function createFuente(
+  prevState: StateFuente,
+  formData: FormData,
+  apiCall: boolean = false,
+) {
+  const AdminOrEditor = await checkifUserisAdminOrEditor();
+  if (!apiCall && !AdminOrEditor) {
+    forbidden();
+  }
+
   const CreateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
   const validatedFields = CreateFuenteFormSchema.safeParse({
     ubicacionId: formData.get('ubicacionId'),
@@ -25,25 +34,45 @@ export async function createFuente(prevState: StateFuente, formData: FormData) {
     };
   }
   const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
+  console.log(ubicacionId);
   try {
     await sql`
       INSERT INTO fuentes (ubicacion_id, name, lat, lng, "imgUrl")
       VALUES (${ubicacionId}, ${name}, ${lat}, ${lng}, ${imgUrl})
     `;
   } catch (error) {
-    return {
-      message: 'DB Error: No se pudo crear la fuente.',
-    };
+    if (error instanceof Error) {
+      if (
+        error.message ==
+        'insert or update on table "fuentes" violates foreign key constraint "ubicacion_id_pkey"'
+      ) {
+        return {
+          errors: {
+            ubicacionId: ['No existe ninguna ubicación con esa ID'],
+          },
+          message: 'Error: No existe ninguna ubicación con esa ID.',
+        };
+      } else {
+        return {
+          message: 'DB Error: No se pudo crear la fuente',
+        };
+      }
+    }
   }
-
-  revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
-  redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+  if (!apiCall) {
+    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+    redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+  }
+  return {
+    message: 'Se ha creado la fuente',
+  };
 }
 
 export async function updateFuente(
   id: string,
   prevState: StateFuente,
   formData: FormData,
+  apiCall: boolean = false,
 ) {
   const UpdateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
   const validatedFields = UpdateFuenteFormSchema.safeParse({
@@ -57,32 +86,58 @@ export async function updateFuente(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Faltan campos, no se pudo actualizar la fuente.',
+      message: 'Faltan campos, no se pudo editar la fuente.',
     };
   }
 
   const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
   try {
-    await sql`
+    const resultado = await sql`
     UPDATE fuentes
     SET ubicacion_id = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
     WHERE id = ${id}
      `;
   } catch (error) {
-    return {
-      message: 'DB Error: No se pudo actualizar la fuente.',
-    };
+    if (error instanceof Error) {
+      if (
+        error.message ==
+        'insert or update on table "fuentes" violates foreign key constraint "ubicacion_id_pkey"'
+      ) {
+        return {
+          errors: {
+            ubicacionId: ['No existe ninguna ubicación con esa ID'],
+          },
+          message: 'Error: No existe ninguna ubicación con esa ID.',
+        };
+      } else {
+        return {
+          message: 'DB Error: No se pudo editar la fuente',
+        };
+      }
+    }
+  }
+  if (!apiCall) {
+    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+    redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
   }
 
-  revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
-  redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+  return {
+    message: 'Se ha editado la fuente.',
+  };
 }
 
-export async function deleteFuente(ubicacionId: string, id: string) {
+export async function deleteFuente(
+  ubicacionId: string,
+  id: string,
+  apiCall = false,
+) {
   try {
     await sql`DELETE FROM fuentes WHERE id = ${id}`;
-    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
-    return { message: 'Fuente borrada.' };
+    if (!apiCall) {
+      revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+    } else {
+      return { message: 'Fuente borrada.' };
+    }
   } catch (error) {
     return {
       message: 'DB Error: No se pudo borrar la fuente.',
