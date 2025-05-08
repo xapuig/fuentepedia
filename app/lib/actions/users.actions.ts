@@ -121,9 +121,23 @@ export async function updateUser(
       `;
     }
   } catch (error) {
-    return {
-      message: 'DB Error: No se pudo actualizar el usuario.',
-    };
+    if (error instanceof Error) {
+      if (
+        error.message ===
+        'duplicate key value violates unique constraint "users_email_key"'
+      ) {
+        return {
+          errors: {
+            email: ['Ya existe una cuenta con ese correo electrónico'],
+          },
+          message: 'Ya existe una cuenta con ese correo electrónico',
+        };
+      } else {
+        return {
+          message: 'DB Error: No se pudo actualizar el usuario.',
+        };
+      }
+    }
   }
 
   revalidatePath(`/dashboard/panel-usuario`);

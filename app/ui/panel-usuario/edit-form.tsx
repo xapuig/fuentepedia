@@ -145,7 +145,11 @@ export default function Form({ user }: { user: User }) {
               />
             </div>
           </div>
-          <div id="confirmNewPassword-error" aria-live="polite" aria-atomic="true">
+          <div
+            id="confirmNewPassword-error"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {state.errors?.confirmNewPassword &&
               state.errors.confirmNewPassword.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
@@ -158,6 +162,7 @@ export default function Form({ user }: { user: User }) {
       {state.message && (
         <div className="mt-1 text-sm text-red-500">{state.message}</div>
       )}
+
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href={`/dashboard/panel-usuario`}
