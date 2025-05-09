@@ -37,14 +37,14 @@ export async function createFuente(
   console.log(ubicacionId);
   try {
     await sql`
-      INSERT INTO fuentes (ubicacion_id, name, lat, lng, "imgUrl")
+      INSERT INTO fuentes (id_ubicacion, name, lat, lng, "imgUrl")
       VALUES (${ubicacionId}, ${name}, ${lat}, ${lng}, ${imgUrl})
     `;
   } catch (error) {
     if (error instanceof Error) {
       if (
         error.message ==
-        'insert or update on table "fuentes" violates foreign key constraint "ubicacion_id_pkey"'
+        'insert or update on table "fuentes" violates foreign key constraint "id_ubicacion_fkey"'
       ) {
         return {
           errors: {
@@ -94,14 +94,14 @@ export async function updateFuente(
   try {
     const resultado = await sql`
     UPDATE fuentes
-    SET ubicacion_id = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
+    SET id_ubicacion = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
     WHERE id = ${id}
      `;
   } catch (error) {
     if (error instanceof Error) {
       if (
         error.message ==
-        'insert or update on table "fuentes" violates foreign key constraint "ubicacion_id_pkey"'
+        'insert or update on table "fuentes" violates foreign key constraint "id_ubicacion_fkey"'
       ) {
         return {
           errors: {

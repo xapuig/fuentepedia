@@ -228,7 +228,7 @@ export async function DELETE(request: Request) {
         { status: 404 },
       );
     }
-    const ubicacionId = fuente.ubicacion_id;
+    const ubicacionId = fuente.id_ubicacion;
     await deleteFuente(ubicacionId, id, true);
     return NextResponse.json('Fuente borrada', { status: 200 });
   } catch (error) {

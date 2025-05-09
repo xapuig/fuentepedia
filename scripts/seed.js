@@ -92,7 +92,7 @@ async function seedFuentes(client) {
     const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS fuentes (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    ubicacion_id UUID NOT NULL,
+    id_ubicacion UUID NOT NULL,
     name varchar(255),
     lat DECIMAL(8,6),
     lng DECIMAL(9,6)
@@ -105,8 +105,8 @@ async function seedFuentes(client) {
     const insertedFuentes = await Promise.all(
       fuentes.map(
         (fuente) => client.sql`
-        INSERT INTO fuentes (ubicacion_id, name, lat, lng, "imgUrl")
-        VALUES (${fuente.ubicacion_id}, ${fuente.name}, ${fuente.lat}, ${fuente.lng}, ${fuente.imgUrl})
+        INSERT INTO fuentes (id_ubicacion, name, lat, lng, "imgUrl")
+        VALUES (${fuente.id_ubicacion}, ${fuente.name}, ${fuente.lat}, ${fuente.lng}, ${fuente.imgUrl})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

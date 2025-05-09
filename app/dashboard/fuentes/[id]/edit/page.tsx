@@ -25,8 +25,8 @@ export default async function Page(props: {
 
   const fuente_a_editar = await fetchFuenteById(id_fuente);
   const [ubicacion, fuentes] = await Promise.all([
-    fetchUbicacionById(fuente_a_editar[0].ubicacion_id),
-    fetchFuentesByUbicacionId(fuente_a_editar[0].ubicacion_id),
+    fetchUbicacionById(fuente_a_editar[0].id_ubicacion),
+    fetchFuentesByUbicacionId(fuente_a_editar[0].id_ubicacion),
   ]);
 
   return (

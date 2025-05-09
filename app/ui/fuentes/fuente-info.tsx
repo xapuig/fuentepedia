@@ -23,9 +23,9 @@ export function FuenteInfo({ fuente, onClose, AdminOrEditor }: Props) {
             {AdminOrEditor && (
               <div className='flex items-center space-x-2'>
                 {' '}
-                <EditFuente ubicacionId={fuente.ubicacion_id} id={fuente.id} />
+                <EditFuente ubicacionId={fuente.id_ubicacion} id={fuente.id} />
                 <DeleteFuente
-                  ubicacionId={fuente.ubicacion_id}
+                  ubicacionId={fuente.id_ubicacion}
                   id={fuente.id}
                   onClose={onClose}
                 />

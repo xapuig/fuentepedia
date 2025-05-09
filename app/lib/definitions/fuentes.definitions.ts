@@ -1,6 +1,6 @@
 export type FuenteField = {
   id: string;
-  ubicacion_id: string;
+  id_ubicacion: string;
   name: string;
   lat: number;
   lng: number;

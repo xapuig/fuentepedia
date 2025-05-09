@@ -60,7 +60,7 @@ export async function fetchFuentesByUbicacionId(id: string) {
     const data = await sql<FuenteField>`
       SELECT *
       FROM fuentes
-      WHERE fuentes.ubicacion_id = ${id};
+      WHERE fuentes.id_ubicacion = ${id};
     `;
     const fuente = data.rows;
     return fuente;
