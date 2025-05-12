@@ -8,9 +8,11 @@ import {
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
+import { CreateUbicacion } from '@/app/ui/ubicaciones/buttons';
 import Form from '@/app/ui/fuentes/select-form';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 import { auth } from '@/auth';
+import Link from 'next/link';
 
 const { validate, version } = require('uuid');
 
@@ -56,8 +58,13 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       <Form ubicaciones={ubicaciones} />
       {AdminOrEditor ? (
         <div className="mt-4">
-          <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+          <div className="mt-4 flex items-center  gap-2 md:mt-8">
             <CreateFuente id_ubicacion={ubicacion[0].id} />
+            <button className="mb-6 rounded-md border bg-blue-500 p-2 text-white hover:bg-blue-400">
+              <Link href={`/dashboard/ubicaciones/${ubicacion[0].id}`}>
+                Información de ubicación
+              </Link>
+            </button>
           </div>
           <div className="">
             <Map

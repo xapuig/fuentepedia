@@ -123,12 +123,12 @@ export function FuenteInfo({ fuente, onClose, AdminOrEditor, id_user }: Props) {
             comentarios={comentarios}
           ></ComentariosFuente>
         </div>
-        <div id="escribir-comentario" className="flex-[1] overflow-y-auto">
+        <div className="border-t bg-gray-50 p-4 sm:p-6">
           <FormComentarioFuente
             fuente={fuente}
             id_user={id_user}
-            onComentarioEscrito={() => handleComentarioEscrito()}
-          ></FormComentarioFuente>
+            onComentarioEscrito={handleComentarioEscrito}
+          />
         </div>
       </div>
     </div>

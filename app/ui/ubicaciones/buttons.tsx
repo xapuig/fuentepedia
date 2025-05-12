@@ -6,7 +6,7 @@ export function CreateUbicacion() {
   return (
     <Link
       href="/dashboard/ubicaciones/create"
-      className="mb-4 rounded-md border bg-blue-500 p-2 text-white hover:bg-blue-400"
+      className="mb-6 rounded-md border bg-blue-500 p-2 text-white hover:bg-blue-400"
     >
       Añadir ubicación
     </Link>

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   },
   description: 'Fuentepedia, conoce tus fuentes.',
   metadataBase: new URL('https://fuentepedia.vercel.app/'),
+  
 };
 
 export default function RootLayout({
