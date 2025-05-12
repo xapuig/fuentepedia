@@ -10,6 +10,8 @@ import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
 import Form from '@/app/ui/fuentes/select-form';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
+import { auth } from '@/auth';
+
 const { validate, version } = require('uuid');
 
 export const metadata: Metadata = {
@@ -22,6 +24,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   if (!validate(id)) {
     notFound();
   }
+
+  const session = await auth();
 
   const [ubicacion, fuentes, ubicaciones] = await Promise.all([
     fetchUbicacionById(id),
@@ -53,13 +57,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       {AdminOrEditor ? (
         <div className="mt-4">
           <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-            <CreateFuente ubicacionId={ubicacion[0].id} />
+            <CreateFuente id_ubicacion={ubicacion[0].id} />
           </div>
           <div className="">
             <Map
               AdminOrEditor={true}
               ubicacion={ubicacion}
               fuentes={fuentes || []}
+              id_user={session?.user?.id}
             />
           </div>
         </div>
@@ -68,6 +73,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           AdminOrEditor={false}
           ubicacion={ubicacion}
           fuentes={fuentes || []}
+          id_user={session?.user?.id}
         />
       )}
     </div>

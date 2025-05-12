@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export function CreateFuente({ ubicacionId }: { ubicacionId: string }) {
+export function CreateFuente({ id_ubicacion }: { id_ubicacion: string }) {
   return (
     <Link
       href={{
         pathname: `/dashboard/fuentes/create`,
-        query: { ubicacionId },
+        query: { id_ubicacion },
       }}
       className="mb-6 rounded-md border bg-blue-500 p-2 text-white hover:bg-blue-400"
     >
@@ -31,7 +31,7 @@ export function CreateFuenteInfoWindow({
     <Link
       href={{
         pathname: `/dashboard/fuentes/create`,
-        query: { ubicacionId: id, lat: lat, lng: lng },
+        query: { id_ubicacion: id, lat: lat, lng: lng },
       }}
       className="text-blue-600 hover:text-blue-300"
     >
@@ -40,7 +40,7 @@ export function CreateFuenteInfoWindow({
   );
 }
 
-export function EditFuente({ id }: { ubicacionId: string; id: string }) {
+export function EditFuente({ id }: { id_ubicacion: string; id: string }) {
   return (
     <Link
       href={`/dashboard/fuentes/${id}/edit`}
@@ -52,15 +52,15 @@ export function EditFuente({ id }: { ubicacionId: string; id: string }) {
 }
 
 export function DeleteFuente({
-  ubicacionId,
+  id_ubicacion,
   id,
   onClose,
 }: {
-  ubicacionId: string;
+  id_ubicacion: string;
   id: string;
   onClose?: () => void;
 }) {
-  const deleteFuentewithId = deleteFuente.bind(null, ubicacionId, id);
+  const deleteFuentewithId = deleteFuente.bind(null, id_ubicacion, id);
   const handleSubmit = () => {
     if (onClose) onClose();
     deleteFuentewithId();

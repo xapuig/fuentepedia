@@ -114,11 +114,13 @@ export async function updateUbicacion(
 }
 
 export async function deleteUbicacion(id: string, apiCall: boolean = false) {
-  const AdminOrEditor = await checkifUserisAdminOrEditor();
-  if (!apiCall && !AdminOrEditor) {
-    forbidden();
-  }
   try {
+    if (!apiCall) {
+      const AdminOrEditor = await checkifUserisAdminOrEditor();
+      if (!AdminOrEditor) {
+        forbidden();
+      }
+    }
     await sql`DELETE FROM ubicaciones WHERE id = ${id}`;
   } catch (error) {
     console.error('Error al borrar la ubicación:', error);

@@ -16,10 +16,12 @@ export default function Map({
   ubicacion,
   fuentes,
   AdminOrEditor,
+  id_user,
 }: {
   ubicacion: UbicacionField[];
   fuentes: FuenteField[];
   AdminOrEditor: boolean;
+  id_user?: string | undefined;
 }) {
   const [activeMarker, setActiveMarker] = useState(null);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
@@ -129,6 +131,7 @@ export default function Map({
           fuente={selectedFuente}
           onClose={() => setSelectedFuente(null)}
           AdminOrEditor={AdminOrEditor}
+          id_user={id_user}
         />
       )}
     </div>

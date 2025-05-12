@@ -1,6 +1,5 @@
 'use client';
 import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
-
 import { useRouter } from 'next/navigation';
 
 export default function Form({
@@ -19,8 +18,8 @@ export default function Form({
           )
         }
         id="ubicacion"
-        name="ubicacionId"
-        className="mb-4 peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+        name="id_ubicacion"
+        className="peer mb-4 block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
         defaultValue=""
         aria-describedby="ubicacion-error"
       >

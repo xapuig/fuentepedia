@@ -152,7 +152,7 @@ export default function MapCreateMarker({
           {/* Ubicación */}
           <div className="mb-4">
             <label
-              htmlFor="ubicacionId"
+              htmlFor="id_ubicacion"
               className="mb-2 block text-sm font-medium"
             >
               Ubicación
@@ -160,10 +160,10 @@ export default function MapCreateMarker({
             <div className="relative mt-2 rounded-md">
               <select
                 onChange={handleUbicacionChange}
-                id="ubicacionId"
-                name="ubicacionId"
+                id="id_ubicacion"
+                name="id_ubicacion"
                 className="peer mb-4 block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
-                aria-describedby="ubicacionId-error"
+                aria-describedby="id_ubicacion-error"
                 defaultValue={ubicacion[0]?.id ?? ''}
               >
                 <option disabled value="">
@@ -176,9 +176,9 @@ export default function MapCreateMarker({
                 ))}
               </select>
             </div>
-            <div id="ubicacionId-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.ubicacionId &&
-                state.errors.ubicacionId.map((error: string) => (
+            <div id="id_ubicacion-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.id_ubicacion &&
+                state.errors.id_ubicacion.map((error: string) => (
                   <p className="mt-2 text-sm text-red-500" key={error}>
                     {error}
                   </p>

@@ -20,7 +20,7 @@ export async function createFuente(
 
   const CreateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
   const validatedFields = CreateFuenteFormSchema.safeParse({
-    ubicacionId: formData.get('ubicacionId'),
+    id_ubicacion: formData.get('id_ubicacion'),
     name: formData.get('name'),
     lat: formData.get('lat'),
     lng: formData.get('lng'),
@@ -33,12 +33,11 @@ export async function createFuente(
       message: 'Faltan campos, error al crear la fuente',
     };
   }
-  const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
-  console.log(ubicacionId);
+  const { id_ubicacion, name, lat, lng, imgUrl } = validatedFields.data;
   try {
     await sql`
       INSERT INTO fuentes (id_ubicacion, name, lat, lng, "imgUrl")
-      VALUES (${ubicacionId}, ${name}, ${lat}, ${lng}, ${imgUrl})
+      VALUES (${id_ubicacion}, ${name}, ${lat}, ${lng}, ${imgUrl})
     `;
   } catch (error) {
     if (error instanceof Error) {
@@ -48,7 +47,7 @@ export async function createFuente(
       ) {
         return {
           errors: {
-            ubicacionId: ['No existe ninguna ubicación con esa ID'],
+            id_ubicacion: ['No existe ninguna ubicación con esa ID'],
           },
           message: 'Error: No existe ninguna ubicación con esa ID.',
         };
@@ -60,8 +59,8 @@ export async function createFuente(
     }
   }
   if (!apiCall) {
-    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
-    redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+    revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
+    redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
   }
   return {
     message: 'Se ha creado la fuente',
@@ -76,7 +75,7 @@ export async function updateFuente(
 ) {
   const UpdateFuenteFormSchema = CreateFuenteSchema.omit({ id: true });
   const validatedFields = UpdateFuenteFormSchema.safeParse({
-    ubicacionId: formData.get('ubicacionId'),
+    id_ubicacion: formData.get('id_ubicacion'),
     name: formData.get('name'),
     lat: formData.get('lat'),
     lng: formData.get('lng'),
@@ -90,11 +89,11 @@ export async function updateFuente(
     };
   }
 
-  const { ubicacionId, name, lat, lng, imgUrl } = validatedFields.data;
+  const { id_ubicacion, name, lat, lng, imgUrl } = validatedFields.data;
   try {
     const resultado = await sql`
     UPDATE fuentes
-    SET id_ubicacion = ${ubicacionId}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
+    SET id_ubicacion = ${id_ubicacion}, name = ${name}, lat = ${lat}, lng = ${lng}, "imgUrl" = ${imgUrl}
     WHERE id = ${id}
      `;
   } catch (error) {
@@ -105,7 +104,7 @@ export async function updateFuente(
       ) {
         return {
           errors: {
-            ubicacionId: ['No existe ninguna ubicación con esa ID'],
+            id_ubicacion: ['No existe ninguna ubicación con esa ID'],
           },
           message: 'Error: No existe ninguna ubicación con esa ID.',
         };
@@ -117,8 +116,8 @@ export async function updateFuente(
     }
   }
   if (!apiCall) {
-    revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
-    redirect(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+    revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
+    redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
   }
 
   return {
@@ -127,14 +126,20 @@ export async function updateFuente(
 }
 
 export async function deleteFuente(
-  ubicacionId: string,
+  id_ubicacion: string,
   id: string,
   apiCall = false,
 ) {
   try {
+    if (!apiCall) {
+      const AdminOrEditor = await checkifUserisAdminOrEditor();
+      if (!AdminOrEditor) {
+        forbidden();
+      }
+    }
     await sql`DELETE FROM fuentes WHERE id = ${id}`;
     if (!apiCall) {
-      revalidatePath(`/dashboard/ubicaciones/${ubicacionId}/mapa`);
+      revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
     } else {
       return { message: 'Fuente borrada.' };
     }

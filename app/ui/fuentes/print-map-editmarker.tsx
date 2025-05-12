@@ -106,8 +106,8 @@ export default function MapEditMarker({
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
           <input
             type="hidden"
-            name="ubicacionId"
-            id="ubicacionId"
+            name="id_ubicacion"
+            id="id_ubicacion"
             value={ubicacion[0].id}
           />
           {/* Nombre */}

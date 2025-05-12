@@ -3,6 +3,7 @@ import {
   fetchFuentesByUbicacionId,
   fetchUbicacionById,
   fetchFuenteById,
+  fetchComentariosByFuente,
 } from '@/app/lib/data';
 import { Metadata } from 'next';
 import MapEditMarker from '@/app/ui/fuentes/print-map-editmarker';

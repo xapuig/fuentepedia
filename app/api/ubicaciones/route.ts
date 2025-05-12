@@ -89,6 +89,18 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    const data = await request.json();
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    const id = formData.get('id') as string;
+    if (!id || !validate(id)) {
+      return NextResponse.json(
+        { error: 'Se requiere una ID válida' },
+        { status: 400 },
+      );
+    }
     const session = await auth();
     if (!session) {
       return NextResponse.json(
@@ -96,27 +108,15 @@ export async function PATCH(request: Request) {
         { status: 401 },
       );
     }
-    const AdminOrEditor = await checkifUserisAdminOrEditor();
 
+    const AdminOrEditor = await checkifUserisAdminOrEditor();
     if (!AdminOrEditor) {
       return NextResponse.json(
         { error: 'No tienes permiso para modificar esta ubicación' },
         { status: 403 },
       );
     }
-    const data = await request.json();
-    const formData = new FormData();
 
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
-    const id = formData.get('id') as string;
-    if (!id) {
-      return NextResponse.json(
-        { error: 'Se requiere una ID' },
-        { status: 400 },
-      );
-    }
     const estado: StateUbicacion = {};
     const ubicacion = await updateUbicacion(id, estado, formData, true);
     if (ubicacion?.errors) {
@@ -139,6 +139,14 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id') || '';
+    if (!id || !validate(id)) {
+      return NextResponse.json(
+        { error: 'Se requiere una ID válida' },
+        { status: 400 },
+      );
+    }
     const session = await auth();
     if (!session) {
       return NextResponse.json(
@@ -151,15 +159,6 @@ export async function DELETE(request: Request) {
       return NextResponse.json(
         { error: 'No tienes permiso para eliminar esta ubicación' },
         { status: 403 },
-      );
-    }
-
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id') || '';
-    if (!id || !validate(id)) {
-      return NextResponse.json(
-        { error: 'Se requiere una ID válida' },
-        { status: 400 },
       );
     }
 

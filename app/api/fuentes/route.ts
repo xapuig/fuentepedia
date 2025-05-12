@@ -16,9 +16,9 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id') || '';
-    const ubicacionId = searchParams.get('ubicacionId') || '';
+    const id_ubicacion = searchParams.get('id_ubicacion') || '';
 
-    if (ubicacionId != '' && id != '') {
+    if (id_ubicacion != '' && id != '') {
       return NextResponse.json(
         {
           error:
@@ -28,14 +28,14 @@ export async function GET(request: Request) {
       );
     }
 
-    if (ubicacionId != '' && !validate(ubicacionId)) {
+    if (id_ubicacion != '' && !validate(id_ubicacion)) {
       return NextResponse.json(
         { error: 'Se requiere una ID de ubicación válida' },
         { status: 400 },
       );
     }
 
-    if (ubicacionId == '') {
+    if (id_ubicacion == '') {
       if (!id || !validate(id)) {
         return NextResponse.json(
           { error: 'Se requiere una ID válida' },
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
       }
     } else {
       const fuentes: FuenteField[] =
-        await fetchFuentesByUbicacionId(ubicacionId);
+        await fetchFuentesByUbicacionId(id_ubicacion);
       const fuente_encontrada = fuentes[0];
       if (!fuente_encontrada) {
         return NextResponse.json(
@@ -103,8 +103,8 @@ export async function POST(request: Request) {
       formData.append(key, data[key]);
     }
 
-    const ubicacionId = formData.get('ubicacionId');
-    if (!validate(ubicacionId)) {
+    const id_ubicacion = formData.get('id_ubicacion');
+    if (!validate(id_ubicacion)) {
       return NextResponse.json(
         { error: 'Se requiere una ID de ubicación válida' },
         { status: 400 },
@@ -173,9 +173,12 @@ export async function PATCH(request: Request) {
     }
 
     const estado: StateFuente = {};
-    const ubicacion = await updateFuente(id, estado, formData, true);
-    if (ubicacion?.errors) {
-      return NextResponse.json({ error: ubicacion.errors }, { status: 500 });
+    const accion_editarfuente = await updateFuente(id, estado, formData, true);
+    if (accion_editarfuente?.errors) {
+      return NextResponse.json(
+        { error: accion_editarfuente.errors },
+        { status: 500 },
+      );
     } else {
       return NextResponse.json('Fuente editada', {
         status: 200,
@@ -228,8 +231,8 @@ export async function DELETE(request: Request) {
         { status: 404 },
       );
     }
-    const ubicacionId = fuente.id_ubicacion;
-    await deleteFuente(ubicacionId, id, true);
+    const id_ubicacion = fuente.id_ubicacion;
+    await deleteFuente(id_ubicacion, id, true);
     return NextResponse.json('Fuente borrada', { status: 200 });
   } catch (error) {
     return NextResponse.json(

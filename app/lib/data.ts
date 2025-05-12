@@ -3,6 +3,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { User } from '@/app/lib/definitions/users.definitions';
 import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
 import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
+import { ComentarioField } from './definitions/comentarios.definitions';
 import { auth } from '@/auth';
 
 export async function fetchUbicaciones() {
@@ -110,7 +111,6 @@ export async function getUserAdmin(apiCall: boolean = false) {
     throw new Error('Acceso denegado: no hay ninguna sesión activa');
   }
 
- 
   try {
     const result =
       await sql`SELECT * FROM users WHERE id = ${session?.user?.id}`;
@@ -146,5 +146,114 @@ export async function getUserEditor() {
   } catch (error) {
     console.error('Error al obtener el usuario:', error);
     throw new Error('No se pudo obtener el usuario');
+  }
+}
+
+export async function fetchComentarios() {
+  try {
+    const data = await sql<ComentarioField>`
+      SELECT
+        *
+      FROM comentarios
+      ORDER BY fecha_creacion DESC;
+    `;
+    const comentarios = data.rows;
+    return comentarios;
+  } catch (error) {
+    console.error('Error al obtener los comentarios:', error);
+    throw new Error('No se pudieron obtener los comentarios.');
+  }
+}
+
+export async function fetchComentarioById(id: string) {
+  try {
+    const data = await sql<ComentarioField>`
+      SELECT *
+      FROM comentarios
+      WHERE comentarios.id = ${id};
+    `;
+    const comentario = data.rows;
+    return comentario;
+  } catch (error) {
+    console.error('Error al obtener el comentario:', error);
+    throw new Error('No se pudo obtener el comentario.');
+  }
+}
+export async function fetchComentariosByFuente(id: string) {
+  try {
+    const data = await sql<ComentarioField>`
+
+      SELECT
+        comentarios.id,
+        comentarios.texto,
+        comentarios.fecha_creacion,
+        comentarios.id_usuario,
+        users.name AS nombre_usuario
+      FROM comentarios
+      JOIN users
+        ON comentarios.id_usuario = users.id
+      WHERE comentarios.id_fuente = ${id}
+      ORDER BY comentarios.fecha_creacion DESC;
+    `;
+
+    const comentarios = data.rows;
+    return comentarios;
+  } catch (err) {
+    console.error('Error al obtener los comentarios:', err);
+    throw new Error('No se pudieron obtener los comentarios.');
+  }
+}
+
+export async function fetchComentariosByUser(id: string) {
+  try {
+    const data = await sql<ComentarioField>`
+
+      SELECT
+        comentarios.id,
+        comentarios.texto,
+        comentarios.fecha_creacion,
+        comentarios.id_usuario,
+        users.name AS nombre_usuario
+      FROM comentarios
+      JOIN users
+        ON comentarios.id_usuario = users.id
+      WHERE comentarios.id_usuario = ${id}
+      ORDER BY comentarios.fecha_creacion DESC;
+    `;
+
+    const comentarios = data.rows;
+    return comentarios;
+  } catch (err) {
+    console.error('Error al obtener los comentarios:', err);
+    throw new Error('No se pudieron obtener los comentarios.');
+  }
+}
+
+export async function fetchComentariosByFuenteUser(
+  id_fuente: string,
+  id_user: string,
+) {
+  try {
+    const data = await sql<ComentarioField>`
+
+      SELECT
+        comentarios.id,
+        comentarios.texto,
+        comentarios.fecha_creacion,
+        comentarios.id_usuario,
+        users.name AS nombre_usuario
+      FROM comentarios
+      JOIN users
+        ON comentarios.id_usuario = users.id
+      WHERE comentarios.id_fuente = ${id_fuente}
+        AND comentarios.id_usuario = ${id_user}
+      ORDER BY comentarios.fecha_creacion DESC;
+    `;
+
+    const comentarios = data.rows;
+    return comentarios;
+  } catch (err) {
+    console.error('Error al obtener los comentarios:', err);
+    throw new Error('No se pudieron obtener los comentarios.');
   }
 }

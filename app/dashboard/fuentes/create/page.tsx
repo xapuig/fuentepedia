@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(props: {
-  searchParams: Promise<{ ubicacionId: string; lat: number; lng: number }>;
+  searchParams: Promise<{ id_ubicacion: string; lat: number; lng: number }>;
 }) {
   const AdminOrEdtior = await checkifUserisAdminOrEditor();
 
@@ -19,14 +19,14 @@ export default async function Page(props: {
   }
 
   const searchParams = await props.searchParams;
-  const ubicacionId = searchParams.ubicacionId;
+  const id_ubicacion = searchParams.id_ubicacion;
   const lat = searchParams.lat;
   const lng = searchParams.lng;
   const ubicaciones = await fetchUbicaciones();
 
   const [ubicacion, fuentes] = await Promise.all([
-    fetchUbicacionById(ubicacionId),
-    fetchFuentesByUbicacionId(ubicacionId),
+    fetchUbicacionById(id_ubicacion),
+    fetchFuentesByUbicacionId(id_ubicacion),
   ]);
 
   return (
@@ -38,7 +38,7 @@ export default async function Page(props: {
               { label: 'Ubicaciones', href: '/dashboard/ubicaciones' },
               {
                 label: `${ubicacion[0].name}`,
-                href: `/dashboard/ubicaciones/${ubicacionId}/mapa`,
+                href: `/dashboard/ubicaciones/${id_ubicacion}/mapa`,
               },
               {
                 label: 'Añadir fuente',

@@ -9,7 +9,7 @@ export type FuenteField = {
 
 export type StateFuente = {
   errors?: {
-    ubicacionId?: string[];
+    id_ubicacion?: string[];
     name?: string[];
     lat?: string[];
     lng?: string[];
