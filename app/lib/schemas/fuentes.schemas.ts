@@ -19,5 +19,9 @@ export const CreateFuenteSchema = z.object({
     .gt(-180, { message: 'Error, escribe un número entre -180 y 180' }),
   imgUrl: z
     .string()
-    .url({ message: 'Error, escribe una URL válida para la imagen' }),
+    .url({ message: 'Error, escribe una URL válida para la imagen' })
+    .startsWith('https://i.imgur.com', {
+      message:
+        'Error, ahora mismo el único servidor de imágenes soportado es Imgur (https://i.imgur.com)',
+    }),
 });

@@ -23,8 +23,8 @@ export default function MapEditMarker({
   fuente_a_editar: FuenteField[];
 }) {
   const [activeMarker, setActiveMarker] = useState(null);
-  const [Latitud, setLatitud] = useState(0);
-  const [Longitud, setLongitud] = useState(0);
+  const [Latitud, setLatitud] = useState(fuente_a_editar[0].lat);
+  const [Longitud, setLongitud] = useState(fuente_a_editar[0].lng);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
   const updateFuenteWithId = updateFuente.bind(null, fuente_a_editar[0].id);
   const initialState = { message: '', errors: {} };
@@ -53,10 +53,11 @@ export default function MapEditMarker({
   const handleClickOnMap = (e: any, activo: any) => {
     setActiveMarker(null);
     setActiveMarkerNuevo(false);
-    if (activo === true)
-      setLatitud(e.latLng.lat()),
-        setLongitud(e.latLng.lng()),
-        setActiveMarkerNuevo(true);
+    if (activo === true) {
+      setLatitud(e.latLng.lat());
+      setLongitud(e.latLng.lng());
+      setActiveMarkerNuevo(true);
+    }
   };
 
   const mapCenter = useMemo(
@@ -154,7 +155,7 @@ export default function MapEditMarker({
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                   aria-describedby="lat-error"
                   onChange={(e) => setLatitud(e.target.valueAsNumber)}
-                  value={Latitud || fuente_a_editar[0].lat}
+                  value={Latitud || ''}
                 />
               </div>
             </div>
@@ -184,7 +185,7 @@ export default function MapEditMarker({
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                   aria-describedby="lng-error"
                   onChange={(e) => setLongitud(e.target.valueAsNumber)}
-                  value={Longitud || fuente_a_editar[0].lng}
+                  value={Longitud || ''}
                 />
               </div>
             </div>

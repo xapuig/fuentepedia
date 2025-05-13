@@ -29,6 +29,10 @@ export default function MapCreateMarker({
   const [activeMarker, setActiveMarker] = useState(null);
   const [Latitud, setLatitud] = useState<number>(Number(latnuevo));
   const [Longitud, setLongitud] = useState<number>(Number(lngnuevo));
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>({
+    lat: Number(latnuevo),
+    lng: Number(lngnuevo),
+  });
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(true);
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createFuente, initialState);
@@ -56,10 +60,11 @@ export default function MapCreateMarker({
   const handleClickOnMap = (e: any, activo: any) => {
     setActiveMarker(null);
     setActiveMarkerNuevo(false);
-    if (activo === true)
-      setLatitud(e.latLng.lat()),
-        setLongitud(e.latLng.lng()),
-        setActiveMarkerNuevo(true);
+    if (activo === true) {
+      setLatitud(e.latLng.lat());
+      setLongitud(e.latLng.lng());
+      setActiveMarkerNuevo(true);
+    }
   };
 
   const handleUbicacionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,8 +74,10 @@ export default function MapCreateMarker({
     );
 
     if (selectedUbicacion) {
-      setLatitud(Number(selectedUbicacion.lat));
-      setLongitud(Number(selectedUbicacion.lng));
+      setMapCenter({
+        lat: Number(selectedUbicacion.lat),
+        lng: Number(selectedUbicacion.lng),
+      });
       setActiveMarkerNuevo(false);
     }
   };
@@ -81,10 +88,7 @@ export default function MapCreateMarker({
     latnuevo = ubicacion[0].lat;
     lngnuevo = ubicacion[0].lng;
   }
-  const mapCenter = useMemo(
-    () => ({ lat: Latitud, lng: Longitud }),
-    [Latitud, Longitud],
-  );
+
   const myStyles = useMemo(
     () => [
       {
