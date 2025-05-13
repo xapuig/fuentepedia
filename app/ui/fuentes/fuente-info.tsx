@@ -28,8 +28,10 @@ export function FuenteInfo({
     <div className=" flex w-full items-center justify-center">
       <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded bg-white shadow-lg">
         {/* Encabezado*/}
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <h2 className="text-xl font-bold">{fuente.name}</h2>
+        <div className="flex items-center justify-between border-b px-4 py-3 pl-20">
+          <div className="flex-1 text-center">
+            <h2 className="text-xl font-bold">{fuente.name}</h2>
+          </div>
 
           <div className="flex items-center space-x-2">
             {AdminOrEditor && (
@@ -42,7 +44,7 @@ export function FuenteInfo({
               </div>
             )}
             <Link
-              className="flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none"
+              className="flex items-center justify-center text-gray-500 hover:text-gray-700"
               href={{
                 pathname: `/dashboard/ubicaciones/${fuente.id_ubicacion}/mapa`,
                 query: { lat: fuente.lat, lng: fuente.lng },
@@ -66,24 +68,32 @@ export function FuenteInfo({
         </div>
 
         {/* Cuerpo */}
-
-        <div id="comentarios" className="flex-[1] overflow-y-auto p-4">
-          <ComentariosFuente
-            fuente={fuente}
-            comentarios={comentarios_fuente}
-          ></ComentariosFuente>
+        <div
+          id="comentarios"
+          className="flex-[1] overflow-y-auto bg-gray-50 p-2 sm:p-2"
+        >
+          {comentarios_fuente.length > 0 ? (
+            <div className="w-full">
+              <ComentariosFuente
+                fuente={fuente}
+                comentarios={comentarios_fuente}
+              ></ComentariosFuente>
+            </div>
+          ) : (
+            <h2 className="w-full text-center text-xl font-bold">
+              No hay comentarios
+            </h2>
+          )}
         </div>
-        {id_user ? (
-          <div className="border-t bg-gray-50 p-4 sm:p-6">
+        <div className="border-t bg-gray-50 p-4 sm:p-6">
+          {id_user ? (
             <FormComentarioFuente fuente={fuente} id_user={id_user} />
-          </div>
-        ) : (
-          <div className="border-t bg-gray-50 p-4 sm:p-6">
-            <h2 className="text-xl font-bold">
+          ) : (
+            <h2 className="text-center text-xl font-bold">
               Inicia sesión para poder escribir comentarios
             </h2>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { CreateFuenteSchema } from '@/app/lib/schemas/fuentes.schemas';
 import { StateFuente } from '@/app/lib/definitions/fuentes.definitions';
 import { forbidden } from 'next/navigation';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
+import { fetchFuenteById } from '../data';
 
 export async function createFuente(
   prevState: StateFuente,
@@ -60,7 +61,9 @@ export async function createFuente(
   }
   if (!apiCall) {
     revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
-    redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
+    redirect(
+      `/dashboard/ubicaciones/${id_ubicacion}/mapa?lat=${lat}&lng=${lng}`,
+    );
   }
   return {
     message: 'Se ha creado la fuente',
@@ -117,7 +120,9 @@ export async function updateFuente(
   }
   if (!apiCall) {
     revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
-    redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
+    redirect(
+      `/dashboard/ubicaciones/${id_ubicacion}/mapa/?lat=${lat}&lng=${lng}`,
+    );
   }
 
   return {
@@ -131,16 +136,20 @@ export async function deleteFuente(
   apiCall: boolean = false,
 ) {
   try {
+    const fuente = await fetchFuenteById(id);
     if (!apiCall) {
       const AdminOrEditor = await checkifUserisAdminOrEditor();
       if (!AdminOrEditor) {
         forbidden();
       }
     }
+
     await sql`DELETE FROM fuentes WHERE id = ${id}`;
     if (!apiCall) {
       revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
-      redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
+      redirect(
+        `/dashboard/ubicaciones/${id_ubicacion}/mapa?lat=${fuente[0].lat}&lng=${fuente[0].lng}`,
+      );
     }
   } catch (error) {
     console.error('Error al borrar la ubicación:', error);

@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { Metadata } from 'next';
 import { auth } from '@/auth';
 import Form from '@/app/ui/panel-usuario/edit-form';

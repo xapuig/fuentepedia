@@ -1,5 +1,5 @@
 import Form from '@/app/ui/ubicaciones/select-form';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { fetchUbicaciones } from '@/app/lib/data';
 import { Metadata } from 'next';
 import { CreateUbicacion } from '@/app/ui/ubicaciones/buttons';

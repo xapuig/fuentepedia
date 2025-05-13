@@ -1,5 +1,5 @@
 import { fetchUbicacionById } from '@/app/lib/data';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import Form from '@/app/ui/ubicaciones/edit-form';
 import { Metadata } from 'next';
 import { forbidden } from 'next/navigation';

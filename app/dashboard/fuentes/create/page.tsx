@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { fetchFuentesByUbicacionId, fetchUbicacionById } from '@/app/lib/data';
 import { Metadata } from 'next';
 import MapCreateMarker from '@/app/ui/fuentes/print-map-createmarker';

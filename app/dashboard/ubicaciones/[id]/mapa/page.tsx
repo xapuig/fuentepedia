@@ -5,7 +5,7 @@ import {
   fetchFuentesByUbicacionId,
   fetchUbicaciones,
 } from '@/app/lib/data';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
 import Form from '@/app/ui/fuentes/select-form';

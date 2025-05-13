@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import Form from '@/app/ui/ubicaciones/create-form';
 import { Metadata } from 'next';
 import { forbidden } from 'next/navigation';
