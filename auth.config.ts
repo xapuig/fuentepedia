@@ -10,7 +10,7 @@ export const authConfig = {
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
 
       if (isOnDashboard) {
-        return isLoggedIn;
+        return true;
       } else if (isLoggedIn) {
         return Response.redirect(new URL('/dashboard/ubicaciones', nextUrl));
       }
@@ -20,7 +20,7 @@ export const authConfig = {
       if (trigger === 'update') {
         return {
           ...token,
-          ...session.user
+          ...session.user,
         };
       }
       if (user) {

@@ -128,7 +128,7 @@ export async function updateFuente(
 export async function deleteFuente(
   id_ubicacion: string,
   id: string,
-  apiCall = false,
+  apiCall: boolean = false,
 ) {
   try {
     if (!apiCall) {
@@ -140,12 +140,10 @@ export async function deleteFuente(
     await sql`DELETE FROM fuentes WHERE id = ${id}`;
     if (!apiCall) {
       revalidatePath(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
-    } else {
-      return { message: 'Fuente borrada.' };
+      redirect(`/dashboard/ubicaciones/${id_ubicacion}/mapa`);
     }
   } catch (error) {
-    return {
-      message: 'DB Error: No se pudo borrar la fuente.',
-    };
+    console.error('Error al borrar la ubicación:', error);
+    throw error;
   }
 }

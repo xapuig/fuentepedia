@@ -11,11 +11,9 @@ import { on } from 'events';
 export function FormComentarioFuente({
   fuente,
   id_user,
-  onComentarioEscrito,
 }: {
   fuente: FuenteField;
   id_user: string | undefined;
-  onComentarioEscrito: () => void;
 }) {
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useActionState(createComentario, initialState);
@@ -33,12 +31,7 @@ export function FormComentarioFuente({
 
   return (
     <div className={styles.homeWrapper}>
-      <form
-        id="comentarios-form"
-        action={dispatch}
-        ref={formRef}
-        onSubmit={onComentarioEscrito}
-      >
+      <form id="comentarios-form" action={dispatch} ref={formRef}>
         <input type="hidden" name="id_fuente" value={fuente.id} />
         <input type="hidden" name="id_usuario" value={id_user} />
         <div className="rounded-md bg-gray-50 p-4 md:p-6">

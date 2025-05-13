@@ -54,19 +54,13 @@ export function EditFuente({ id }: { id_ubicacion: string; id: string }) {
 export function DeleteFuente({
   id_ubicacion,
   id,
-  onClose,
 }: {
   id_ubicacion: string;
   id: string;
-  onClose?: () => void;
 }) {
-  const deleteFuentewithId = deleteFuente.bind(null, id_ubicacion, id);
-  const handleSubmit = () => {
-    if (onClose) onClose();
-    deleteFuentewithId();
-  };
+  const deleteFuentewithId = deleteFuente.bind(null, id_ubicacion, id, false);
   return (
-    <form action={handleSubmit} className="inline-flex">
+    <form action={deleteFuentewithId} className="inline-flex">
       <button
         type="submit"
         className="text-gray-500 hover:text-gray-700 focus:outline-none"

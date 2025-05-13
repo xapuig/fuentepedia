@@ -8,7 +8,6 @@ import {
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';
-import { CreateUbicacion } from '@/app/ui/ubicaciones/buttons';
 import Form from '@/app/ui/fuentes/select-form';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 import { auth } from '@/auth';
@@ -19,9 +18,15 @@ const { validate, version } = require('uuid');
 export const metadata: Metadata = {
   title: 'Mapa de fuentes',
 };
-export default async function Page(props: { params: Promise<{ id: string }> }) {
+export default async function Page(props: {
+  params: Promise<{ id: string; lat?: number; lng?: number }>;
+  searchParams: Promise<{ lat: number; lng: number }>;
+}) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
   const id = params.id;
+  const lat = searchParams.lat;
+  const lng = searchParams.lng;
   const AdminOrEditor = await checkifUserisAdminOrEditor();
   if (!validate(id)) {
     notFound();
@@ -72,6 +77,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
               ubicacion={ubicacion}
               fuentes={fuentes || []}
               id_user={session?.user?.id}
+              lat={lat}
+              lng={lng}
             />
           </div>
         </div>
@@ -81,6 +88,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           ubicacion={ubicacion}
           fuentes={fuentes || []}
           id_user={session?.user?.id}
+          lat={lat}
+          lng={lng}
         />
       )}
     </div>

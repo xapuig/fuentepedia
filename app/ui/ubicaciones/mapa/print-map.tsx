@@ -11,46 +11,53 @@ import { FuenteField } from '@/app/lib/definitions/fuentes.definitions';
 import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
 import { CreateFuenteInfoWindow } from '@/app/ui/fuentes/buttons';
 import { FuenteInfo } from '@/app/ui/fuentes/fuente-info';
+import { useRouter } from 'next/navigation';
+import { set } from 'zod';
 
 export default function Map({
   ubicacion,
   fuentes,
   AdminOrEditor,
   id_user,
+  lat,
+  lng,
 }: {
   ubicacion: UbicacionField[];
   fuentes: FuenteField[];
   AdminOrEditor: boolean;
   id_user?: string | undefined;
+  lat?: number;
+  lng?: number;
 }) {
+  const defaultLat = +(lat ?? ubicacion[0].lat);
+  const defaultLng = +(lng ?? ubicacion[0].lng);
+
+  const router = useRouter();
   const [activeMarker, setActiveMarker] = useState(null);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
-  const [LatitudNuevo, setLatitud] = useState(0);
-  const [LongitudNuevo, setLongitud] = useState(0);
-  const [selectedFuente, setSelectedFuente] = useState<FuenteField | null>(
-    null,
-  );
+  const [LatitudNuevo, setLatitudNuevo] = useState(0);
+  const [LongitudNuevo, setLongitudNuevo] = useState(0);
 
   const handleActiveMarker = (marker: any, fuenteSeleccionada: FuenteField) => {
-    setActiveMarker(marker);
-    setSelectedFuente(fuenteSeleccionada);
+    router.push(`/dashboard/fuentes/${fuenteSeleccionada.id}`);
   };
 
   const handleClickOnMap = (e: any, activo: any) => {
     setActiveMarker(null);
     setActiveMarkerNuevo(false);
-    if (activo === true)
-      setLatitud(e.latLng.lat()),
-        setLongitud(e.latLng.lng()),
-        setActiveMarkerNuevo(true);
+    if (activo === true) {
+      setLatitudNuevo(e.latLng.lat());
+      setLongitudNuevo(e.latLng.lng());
+      setActiveMarkerNuevo(true);
+    }
   };
-
-  const [lat, setLat] = useState(Number(ubicacion[0].lat));
-  const [lng, setLng] = useState(Number(ubicacion[0].lng));
 
   const libraries = useMemo(() => ['places'], []);
 
-  const mapCenter = useMemo(() => ({ lat: lat, lng: lng }), [lat, lng]);
+  const mapCenter = useMemo(
+    () => ({ lat: defaultLat, lng: defaultLng }),
+    [defaultLat, defaultLng],
+  );
   const myStyles = useMemo(
     () => [
       {
@@ -125,15 +132,6 @@ export default function Map({
           ></MarkerF>
         ))}
       </GoogleMap>
-
-      {selectedFuente && (
-        <FuenteInfo
-          fuente={selectedFuente}
-          onClose={() => setSelectedFuente(null)}
-          AdminOrEditor={AdminOrEditor}
-          id_user={id_user}
-        />
-      )}
     </div>
   );
 }

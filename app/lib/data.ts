@@ -108,7 +108,7 @@ export async function getUserAdmin(apiCall: boolean = false) {
   const session = await auth(); // Obtiene la sesión del usuario actual
 
   if (!session) {
-    throw new Error('Acceso denegado: no hay ninguna sesión activa');
+    return false;
   }
 
   try {
@@ -130,7 +130,8 @@ export async function getUserAdmin(apiCall: boolean = false) {
 export async function getUserEditor() {
   const session = await auth(); // Obtiene la sesión del usuario actual
   if (!session) {
-    throw new Error('Acceso denegado: no hay ninguna sesión activa');
+    return false;
+    // throw new Error('Acceso denegado: no hay ninguna sesión activa');
   }
 
   try {
