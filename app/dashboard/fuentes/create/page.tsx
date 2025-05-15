@@ -1,10 +1,13 @@
 import Breadcrumbs from '@/app/ui/breadcrumbs';
-import { fetchFuentesByUbicacionId, fetchUbicacionById } from '@/app/lib/data';
+import { fetchFuentesByUbicacionId } from '@/app/lib/data/fuentes.data';
+import {
+  fetchUbicacionById,
+  fetchUbicaciones,
+} from '@/app/lib/data/ubicaciones.data';
 import { Metadata } from 'next';
 import MapCreateMarker from '@/app/ui/fuentes/print-map-createmarker';
 import { forbidden } from 'next/navigation';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
-import { fetchUbicaciones } from '@/app/lib/data';
 export const metadata: Metadata = {
   title: 'Crear marcador de fuente',
 };

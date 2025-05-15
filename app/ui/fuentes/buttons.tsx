@@ -70,3 +70,5 @@ export function DeleteFuente({
     </form>
   );
 }
+
+export function CloseFuente(id: string) {}

@@ -1,19 +1,13 @@
 import { Metadata } from 'next';
-import Info from '@/app/ui/ubicaciones/info-ubicacion';
-import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { notFound } from 'next/navigation';
-import {
-  fetchFuenteById,
-  fetchUbicacionById,
-  fetchComentariosByFuente,
-} from '@/app/lib/data';
+import { fetchFuenteById } from '@/app/lib/data/fuentes.data';
+import { fetchComentariosByFuente } from '@/app/lib/data/comentarios.data';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 const { validate, version } = require('uuid');
-import { forbidden } from 'next/navigation';
 import { FuenteInfo } from '@/app/ui/fuentes/fuente-info';
 import { auth } from '@/auth';
 export const metadata: Metadata = {
-  title: 'Información de ubicacion',
+  title: 'Información de fuente',
 };
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
@@ -24,8 +18,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   if (!validate(id)) {
     notFound();
   }
+  const fuente = await fetchFuenteById(id);
 
-  const [fuente] = await Promise.all([fetchFuenteById(id)]);
   if (!fuente || fuente.length === 0) {
     notFound();
   }
@@ -33,8 +27,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const AdminOrEditor = await checkifUserisAdminOrEditor();
 
   const comentarios = await fetchComentariosByFuente(id);
-
-
 
   return (
     <div className="w-full">

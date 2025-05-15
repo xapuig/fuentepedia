@@ -4,10 +4,14 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 const { v4: uuidv4 } = require('uuid');
 import { CreateComentarioSchema } from '@/app/lib/schemas/comentarios.schemas';
-import { StateComentario } from '@/app/lib/definitions/comentarios.definitions';
+import {
+  ComentarioField,
+  StateComentario,
+} from '@/app/lib/definitions/comentarios.definitions';
 import { forbidden } from 'next/navigation';
 import { NextResponse } from 'next/server';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
+import { auth } from '@/auth';
 
 export async function createComentario(
   prevState: StateComentario,
@@ -148,12 +152,20 @@ export async function updateComentario(
   };
 }
 
-export async function deleteComentario(id: string, apiCall: boolean = false) {
+export async function deleteComentario(
+  id: string,
+  id_fuente: string,
+  id_user: string,
+  apiCall: boolean = false,
+) {
   try {
     if (!apiCall) {
       const AdminOrEditor = await checkifUserisAdminOrEditor();
-      if (!AdminOrEditor) {
-        forbidden();
+      const session = await auth();
+      if (!AdminOrEditor && session?.user?.id !== id_user) {
+        revalidatePath(`/dashboard/fuentes/${id_fuente}}`);
+        console.error('No tienes permiso para eliminar este comentario.');
+        return;
       }
     }
     await sql`
@@ -161,7 +173,7 @@ export async function deleteComentario(id: string, apiCall: boolean = false) {
       WHERE id = ${id}
     `;
     if (!apiCall) {
-      revalidatePath(`/dashboard/fuentes/${id}`);
+      revalidatePath(`/dashboard/fuentes/${id_fuente}}`);
     }
   } catch (error) {
     console.error('Error al eliminar el comentario:', error);

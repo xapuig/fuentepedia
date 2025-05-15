@@ -1,10 +1,13 @@
 import Breadcrumbs from '@/app/ui/breadcrumbs';
 import {
   fetchFuentesByUbicacionId,
-  fetchUbicacionById,
   fetchFuenteById,
-  fetchComentariosByFuente,
-} from '@/app/lib/data';
+} from '@/app/lib/data/fuentes.data';
+import {
+  fetchUbicacionById,
+  fetchUbicaciones,
+} from '@/app/lib/data/ubicaciones.data';
+import { fetchComentariosByFuente } from '@/app/lib/data/comentarios.data';
 import { Metadata } from 'next';
 import MapEditMarker from '@/app/ui/fuentes/print-map-editmarker';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
@@ -23,6 +26,8 @@ export default async function Page(props: {
   }
 
   const id_fuente = params['id'];
+
+  const ubicaciones = await fetchUbicaciones();
 
   const fuente_a_editar = await fetchFuenteById(id_fuente);
   const [ubicacion, fuentes] = await Promise.all([
@@ -50,6 +55,7 @@ export default async function Page(props: {
         ubicacion={ubicacion}
         fuentes={fuentes}
         fuente_a_editar={fuente_a_editar}
+        ubicaciones={ubicaciones}
       />
     </main>
   );

@@ -17,16 +17,22 @@ export default function MapEditMarker({
   ubicacion,
   fuentes,
   fuente_a_editar,
+  ubicaciones,
 }: {
   ubicacion: UbicacionField[];
   fuentes: FuenteField[];
   fuente_a_editar: FuenteField[];
+  ubicaciones: UbicacionField[];
 }) {
   const [activeMarker, setActiveMarker] = useState(null);
   const [Latitud, setLatitud] = useState(fuente_a_editar[0].lat);
   const [Longitud, setLongitud] = useState(fuente_a_editar[0].lng);
   const [activeMarkerNuevo, setActiveMarkerNuevo] = useState(false);
   const updateFuenteWithId = updateFuente.bind(null, fuente_a_editar[0].id);
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>({
+    lat: Number(fuente_a_editar[0].lat),
+    lng: Number(fuente_a_editar[0].lng),
+  });
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useActionState(updateFuenteWithId, initialState);
   const formRef = useRef<HTMLFormElement>(null);
@@ -60,13 +66,21 @@ export default function MapEditMarker({
     }
   };
 
-  const mapCenter = useMemo(
-    () => ({
-      lat: Number(fuente_a_editar[0].lat),
-      lng: Number(fuente_a_editar[0].lng),
-    }),
-    [fuente_a_editar],
-  );
+  const handleUbicacionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = e.target.value;
+    const selectedUbicacion = ubicaciones.find(
+      (ubicacion) => ubicacion.id === selectedId,
+    );
+
+    if (selectedUbicacion) {
+      setMapCenter({
+        lat: Number(selectedUbicacion.lat),
+        lng: Number(selectedUbicacion.lng),
+      });
+      setActiveMarkerNuevo(false);
+    }
+  };
+
   const myStyles = useMemo(
     () => [
       {
@@ -105,12 +119,6 @@ export default function MapEditMarker({
     <div className={styles.homeWrapper}>
       <form action={dispatch} ref={formRef}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
-          <input
-            type="hidden"
-            name="id_ubicacion"
-            id="id_ubicacion"
-            value={ubicacion[0].id}
-          />
           {/* Nombre */}
           <div className="mb-4">
             <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -132,6 +140,42 @@ export default function MapEditMarker({
             <div id="name-error" aria-live="polite" aria-atomic="true">
               {state.errors?.name &&
                 state.errors.name.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+          </div>
+          {/* Ubicación */}
+          <div className="mb-4">
+            <label
+              htmlFor="id_ubicacion"
+              className="mb-2 block text-sm font-medium"
+            >
+              Ubicación
+            </label>
+            <div className="relative mt-2 rounded-md">
+              <select
+                onChange={handleUbicacionChange}
+                id="id_ubicacion"
+                name="id_ubicacion"
+                className="peer mb-4 block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
+                aria-describedby="id_ubicacion-error"
+                defaultValue={ubicacion[0]?.id ?? ''}
+              >
+                <option disabled value="">
+                  Selecciona una ubicación
+                </option>
+                {ubicaciones.map((ubicacion_select) => (
+                  <option key={ubicacion_select.id} value={ubicacion_select.id}>
+                    {ubicacion_select.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div id="id_ubicacion-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.id_ubicacion &&
+                state.errors.id_ubicacion.map((error: string) => (
                   <p className="mt-2 text-sm text-red-500" key={error}>
                     {error}
                   </p>
@@ -228,7 +272,11 @@ export default function MapEditMarker({
         </div>
         <div className="mt-6 flex justify-end gap-4">
           <Link
-            href={'/dashboard/ubicaciones/' + ubicacion[0].id + '/mapa'}
+            href={
+              '/dashboard/ubicaciones/' +
+              ubicacion[0].id +
+              `/mapa?lat=${fuente_a_editar[0].lat}&lng=${fuente_a_editar[0].lng}`
+            }
             className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
           >
             Cancelar

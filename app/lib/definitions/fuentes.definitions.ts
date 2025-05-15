@@ -1,7 +1,8 @@
 export type FuenteField = {
   id: string;
-  id_ubicacion: string;
   name: string;
+  id_ubicacion: string;
+  name_ubicacion: string;
   lat: number;
   lng: number;
   imgUrl: string;
@@ -9,8 +10,8 @@ export type FuenteField = {
 
 export type StateFuente = {
   errors?: {
-    id_ubicacion?: string[];
     name?: string[];
+    id_ubicacion?: string[];
     lat?: string[];
     lng?: string[];
     imgUrl?: string[];

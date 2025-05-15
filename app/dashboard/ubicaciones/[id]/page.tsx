@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Info from '@/app/ui/ubicaciones/info-ubicacion';
 import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { notFound } from 'next/navigation';
-import { fetchUbicacionById } from '@/app/lib/data';
+import { fetchUbicacionById } from '@/app/lib/data/ubicaciones.data';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
 const { validate, version } = require('uuid');
 import { forbidden } from 'next/navigation';

@@ -3,7 +3,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: 'admin' | 'user' | 'editor';
 };
 
 export type StateUpdateUser = {

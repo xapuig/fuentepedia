@@ -1,4 +1,4 @@
-import { fetchUbicacionById } from '@/app/lib/data';
+import { fetchUbicacionById } from '@/app/lib/data/ubicaciones.data';
 import Breadcrumbs from '@/app/ui/breadcrumbs';
 import Form from '@/app/ui/ubicaciones/edit-form';
 import { Metadata } from 'next';

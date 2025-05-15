@@ -24,7 +24,7 @@ export default function Form({ user }: { user: User }) {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Escribe el nombre de la ubicación"
+                placeholder="Escribe tu nuevo nombre de usuario"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="name-error"
                 defaultValue={user.name}
@@ -51,7 +51,7 @@ export default function Form({ user }: { user: User }) {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="Escribe tu correo electrónico"
+                placeholder="Escribe tu nuevo correo electrónico"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 defaultValue={user.email}

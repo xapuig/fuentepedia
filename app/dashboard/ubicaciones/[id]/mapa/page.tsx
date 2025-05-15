@@ -2,9 +2,9 @@ import { Metadata } from 'next';
 import Map from '@/app/ui/ubicaciones/mapa/print-map';
 import {
   fetchUbicacionById,
-  fetchFuentesByUbicacionId,
   fetchUbicaciones,
-} from '@/app/lib/data';
+} from '@/app/lib/data/ubicaciones.data';
+import { fetchFuentesByUbicacionId } from '@/app/lib/data/fuentes.data';
 import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { notFound } from 'next/navigation';
 import { CreateFuente } from '@/app/ui/fuentes/buttons';

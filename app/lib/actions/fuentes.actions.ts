@@ -7,7 +7,7 @@ import { CreateFuenteSchema } from '@/app/lib/schemas/fuentes.schemas';
 import { StateFuente } from '@/app/lib/definitions/fuentes.definitions';
 import { forbidden } from 'next/navigation';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
-import { fetchFuenteById } from '../data';
+import { fetchFuenteById } from '@/app/lib/data/fuentes.data';
 
 export async function createFuente(
   prevState: StateFuente,

@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const session = await auth();
-  if (!session) {
-    forbidden()
+  if (!session?.user?.id) {
+    forbidden();
   }
   return (
     <>

@@ -5,7 +5,7 @@ import {
   fetchComentarioById,
   fetchComentariosByUser,
   fetchComentarios,
-} from '@/app/lib/data';
+} from '@/app/lib/data/comentarios.data';
 import {
   FuenteField,
   StateFuente,
@@ -144,7 +144,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },
@@ -182,7 +182,7 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },
@@ -249,7 +249,7 @@ export async function PATCH(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },
@@ -263,23 +263,24 @@ export async function DELETE(request: Request) {
         { status: 400 },
       );
     }
+    const comentarios: ComentarioField[] = await fetchComentarioById(id);
+    const comentario = comentarios[0];
     const AdminOrEditor = await checkifUserisAdminOrEditor();
-    if (!AdminOrEditor) {
+    if (!AdminOrEditor && session.user.id !== comentario.id_usuario) {
       return NextResponse.json(
-        { error: 'No tienes permiso para eliminar esta fuente' },
+        { error: 'No tienes permiso para eliminar este comentario' },
         { status: 403 },
       );
     }
 
-    const comentarios: ComentarioField[] = await fetchComentarioById(id);
-    const comentario = comentarios[0];
     if (!comentario) {
       return NextResponse.json(
         { error: 'Comentario no encontrado' },
         { status: 404 },
       );
     }
-    await deleteComentario(id, true);
+    const id_fuente = '';
+    await deleteComentario(id, id_fuente, session.user.id, true);
     return NextResponse.json('Comentario borrado', { status: 200 });
   } catch (error) {
     return NextResponse.json(

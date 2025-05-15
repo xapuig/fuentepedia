@@ -44,7 +44,7 @@ export function FuenteInfo({
               </div>
             )}
             <Link
-              className="flex items-center justify-center text-gray-500 hover:text-gray-700"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
               href={{
                 pathname: `/dashboard/ubicaciones/${fuente.id_ubicacion}/mapa`,
                 query: { lat: fuente.lat, lng: fuente.lng },
@@ -77,6 +77,8 @@ export function FuenteInfo({
               <ComentariosFuente
                 fuente={fuente}
                 comentarios={comentarios_fuente}
+                AdminOrEditor={AdminOrEditor}
+                id_user={id_user}
               ></ComentariosFuente>
             </div>
           ) : (

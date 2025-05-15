@@ -5,6 +5,7 @@ export type ComentarioField = {
   texto: string;
   fecha_creacion: string;
   nombre_usuario: string;
+  nombre_fuente: string;
 };
 
 export type StateComentario = {

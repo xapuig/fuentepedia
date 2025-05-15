@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import { fetchUbicacionById } from '@/app/lib/data';
+import { fetchUbicacionById } from '@/app/lib/data/ubicaciones.data';
 import { UbicacionField } from '@/app/lib/definitions/ubicaciones.definitions';
-import { createUbicacion } from '@/app/lib/actions/ubicaciones.actions';
-import { updateUbicacion } from '@/app/lib/actions/ubicaciones.actions';
-import { deleteUbicacion } from '@/app/lib/actions/ubicaciones.actions';
+import { createUbicacion, updateUbicacion, deleteUbicacion} from '@/app/lib/actions/ubicaciones.actions';
 import { StateUbicacion } from '@/app/lib/definitions/ubicaciones.definitions';
 import { auth } from '@/auth';
 import { checkifUserisAdminOrEditor } from '@/app/lib/utils';
@@ -46,7 +44,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },
@@ -102,7 +100,7 @@ export async function PATCH(request: Request) {
       );
     }
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },
@@ -148,7 +146,7 @@ export async function DELETE(request: Request) {
       );
     }
     const session = await auth();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Sesión no iniciada' },
         { status: 401 },

@@ -1,10 +1,11 @@
 import { auth } from '@/auth';
 import { UpdateUser } from './buttons';
-import { getUserById } from '@/app/lib/data';
+import { getUserById } from '@/app/lib/data/users.data';
 import { User } from '@/app/lib/definitions/users.definitions';
 export async function UserInfo() {
   const session = await auth();
-  const user: User = await getUserById(session?.user?.id ?? '');
+  const user = await getUserById(session?.user?.id ?? '');
+
   return (
     <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
       <div className="mb-2 flex">
