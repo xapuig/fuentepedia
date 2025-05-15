@@ -28,7 +28,7 @@ export function EditorMenuButton() {
           onClick={() => setAbrirMenu(!abrirMenu)}
         >
           <Bars3Icon className="w-6" />
-          <p>Gestión</p>
+          <p className="hidden md:block">Gestión</p>
         </button>
       ) : (
         <button
@@ -37,7 +37,7 @@ export function EditorMenuButton() {
           onClick={() => setAbrirMenu(!abrirMenu)}
         >
           <Bars3Icon className="w-6" />
-          <p>Gestión</p>
+          <p className="hidden md:block">Gestión</p>
         </button>
       )}
 
@@ -50,7 +50,7 @@ export function EditorMenuButton() {
                 `}
           >
             <MapPinIcon className="w-6" />
-            <p>Gestionar ubicaciones</p>
+            <p className="hidden md:block">Gestionar ubicaciones</p>
           </Link>
           <Link
             href="/dashboard/admin/fuentes"
@@ -59,7 +59,7 @@ export function EditorMenuButton() {
                 `}
           >
             <UsersIcon className="w-6" />
-            <p>Gestionar fuentes</p>
+            <p className="hidden md:block">Gestionar fuentes</p>
           </Link>
           <Link
             href="/dashboard/admin/comentarios"
@@ -68,7 +68,7 @@ export function EditorMenuButton() {
                 `}
           >
             <ChatBubbleLeftEllipsisIcon className="w-6" />
-            <p>Gestionar comentarios</p>
+            <p className="hidden md:block">Gestionar comentarios</p>
           </Link>
         </div>
       )}

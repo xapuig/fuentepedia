@@ -18,7 +18,7 @@ export function AdminMenuButton() {
     if (pathname.startsWith('/dashboard/admin')) {
       setAbrirMenu(true);
     }
-  }, [])
+  }, []);
   return (
     <div>
       {abrirMenu ? (
@@ -28,7 +28,7 @@ export function AdminMenuButton() {
           onClick={() => setAbrirMenu(!abrirMenu)}
         >
           <Bars3Icon className="w-6" />
-          <p>Gestión</p>
+          <p className="hidden md:block">Gestión</p>
         </button>
       ) : (
         <button
@@ -37,7 +37,7 @@ export function AdminMenuButton() {
           onClick={() => setAbrirMenu(!abrirMenu)}
         >
           <Bars3Icon className="w-6" />
-          <p>Gestión</p>
+          <p className="hidden md:block">Gestión</p>
         </button>
       )}
 
@@ -50,7 +50,7 @@ export function AdminMenuButton() {
                 `}
           >
             <UsersIcon className="w-6" />
-            <p>Gestionar usuarios</p>
+            <p className="hidden md:block">Gestionar usuarios</p>
           </Link>
           <Link
             href="/dashboard/admin/ubicaciones"
@@ -59,7 +59,7 @@ export function AdminMenuButton() {
                 `}
           >
             <MapPinIcon className="w-6" />
-            <p>Gestionar ubicaciones</p>
+            <p className="hidden md:block">Gestionar ubicaciones</p>
           </Link>
           <Link
             href="/dashboard/admin/fuentes"
@@ -68,7 +68,7 @@ export function AdminMenuButton() {
                 `}
           >
             <UsersIcon className="w-6" />
-            <p>Gestionar fuentes</p>
+            <p className="hidden md:block">Gestionar fuentes</p>
           </Link>
           <Link
             href="/dashboard/admin/comentarios"
@@ -77,7 +77,7 @@ export function AdminMenuButton() {
                 `}
           >
             <ChatBubbleLeftEllipsisIcon className="w-6" />
-            <p>Gestionar comentarios</p>
+            <p className="hidden md:block">Gestionar comentarios</p>
           </Link>
         </div>
       )}
