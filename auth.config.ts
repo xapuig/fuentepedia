@@ -1,5 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 import { sql } from '@vercel/postgres';
+import { User } from './app/lib/definitions/users.definitions';
+import next from 'next';
 
 async function getUserExists(id: string | undefined) {
   try {
@@ -16,6 +18,32 @@ async function getUserExists(id: string | undefined) {
   }
 }
 
+async function getUserAdminEditor(id: string | undefined) {
+  try {
+    if (!id) return false;
+    const result = await sql`SELECT users.role FROM users WHERE id = ${id}`;
+    const user = result.rows[0] as User;
+    if (user.role === 'admin' || user.role === 'editor') return true;
+    else return false;
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    throw new Error('No se pudo obtener el usuario');
+  }
+}
+
+async function getUserAdmin(id: string | undefined) {
+  try {
+    if (!id) return false;
+    const result = await sql`SELECT users.role FROM users WHERE id = ${id}`;
+    const user = result.rows[0] as User;
+    if (user.role === 'admin') return true;
+    else return false;
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    throw new Error('No se pudo obtener el usuario');
+  }
+}
+
 export const authConfig = {
   pages: {
     signIn: '/login',
@@ -25,16 +53,33 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user?.id;
 
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isOnAdminEditorMenu =
+        nextUrl.pathname.startsWith('/dashboard/admin');
+      const isOnAdminMenu = nextUrl.pathname.startsWith(
+        '/dashboard/admin/users',
+      );
 
-      if (isOnDashboard) {
-        if (isLoggedIn) {
-          return true;
-        } else {
-          return true;
-        }
-      } else if (isLoggedIn) {
+      if (isLoggedIn && !isOnDashboard) {
         return Response.redirect(new URL('/dashboard/ubicaciones', nextUrl));
       }
+
+      if (isOnAdminMenu) {
+        const isAdmin = await getUserAdmin(auth?.user?.id);
+        if (isAdmin) {
+          return true;
+        } else {
+          return Response.redirect(new URL('/dashboard/ubicaciones', nextUrl));
+        }
+      }
+      if (isOnAdminEditorMenu) {
+        const isAdminEditor = await getUserAdminEditor(auth?.user?.id);
+        if (isAdminEditor) {
+          return true;
+        } else {
+          return Response.redirect(new URL('/dashboard/ubicaciones', nextUrl));
+        }
+      }
+
       return true;
     },
     async jwt({ token, user, trigger, session }) {

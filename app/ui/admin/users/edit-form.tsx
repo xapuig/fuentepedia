@@ -147,8 +147,8 @@ export default function Form({ user }: { user: User }) {
                   Selecciona un rol
                 </option>
                 <option value="admin">Administrador</option>
-                <option value="user">Usuario</option>
                 <option value="editor">Editor</option>
+                <option value="user">Usuario</option>
               </select>
             </div>
           </div>
