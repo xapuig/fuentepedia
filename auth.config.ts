@@ -58,8 +58,10 @@ export const authConfig = {
         '/dashboard/admin/users',
       );
       const root = nextUrl.pathname === '/';
+      const register = nextUrl.pathname === '/register';
+      const login = nextUrl.pathname === '/login';
 
-      if (!root && !isLoggedIn && !isOnDashboard) {
+      if (!register && !login && !root && !isLoggedIn && !isOnDashboard) {
         return Response.redirect(new URL('/', nextUrl));
       }
       if (isLoggedIn && !isOnDashboard) {
