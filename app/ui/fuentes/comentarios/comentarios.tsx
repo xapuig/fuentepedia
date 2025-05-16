@@ -15,6 +15,7 @@ export function ComentariosFuente({
   AdminOrEditor: boolean;
   id_user: string | undefined;
 }) {
+  console.log(AdminOrEditor)
   return (
     <div className="mt-4">
       {comentarios.length > 0 &&
@@ -28,7 +29,7 @@ export function ComentariosFuente({
                 <p>{comentario.nombre_usuario}</p>
               </div>
               <div className="flex items-start justify-end gap-2">
-                {AdminOrEditor || id_user === comentario.id_usuario && (
+                {(AdminOrEditor || id_user === comentario.id_usuario) && (
                   <DeleteComentario
                     comentario={comentario}
                     id_fuente={fuente.id}
