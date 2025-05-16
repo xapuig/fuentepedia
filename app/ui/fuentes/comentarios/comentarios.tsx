@@ -15,7 +15,6 @@ export function ComentariosFuente({
   AdminOrEditor: boolean;
   id_user: string | undefined;
 }) {
-  console.log(AdminOrEditor)
   return (
     <div className="mt-4">
       {comentarios.length > 0 &&
