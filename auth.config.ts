@@ -1,7 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import { User } from './app/lib/definitions/users.definitions';
-import next from 'next';
 
 async function getUserExists(id: string | undefined) {
   try {
@@ -58,7 +57,11 @@ export const authConfig = {
       const isOnAdminMenu = nextUrl.pathname.startsWith(
         '/dashboard/admin/users',
       );
+      const root = nextUrl.pathname === '/';
 
+      if (!root && !isLoggedIn && !isOnDashboard) {
+        return Response.redirect(new URL('/', nextUrl));
+      }
       if (isLoggedIn && !isOnDashboard) {
         return Response.redirect(new URL('/dashboard/ubicaciones', nextUrl));
       }
